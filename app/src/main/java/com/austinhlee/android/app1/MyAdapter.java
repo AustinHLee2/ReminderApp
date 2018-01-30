@@ -1,10 +1,13 @@
 package com.austinhlee.android.app1;
 
+import android.content.Context;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.TextView;
 
 import java.util.List;
@@ -16,21 +19,29 @@ import java.util.List;
 
 public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
 
-    private List<Task> mDataset;
+    private static List<Task> mDataset;
 
-    public static class ViewHolder extends RecyclerView.ViewHolder{
+    public class ViewHolder extends RecyclerView.ViewHolder{
 
         public TextView mTaskName;
         public TextView mDateTextView;
+        public CheckBox mCheckBox;
 
         public ViewHolder(CardView v){
             super(v);
             mTaskName = v.findViewById(R.id.taskNameTextView);
             mDateTextView = v.findViewById(R.id.dateTextView);
+            mCheckBox = v.findViewById(R.id.taskCheckBox);
             v.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     System.out.println("hello");
+                }
+            });
+            mCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                @Override
+                public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                   removeItem(getAdapterPosition());
                 }
             });
         }
@@ -57,4 +68,11 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
     public int getItemCount() {
         return mDataset.size();
     }
+
+    private void removeItem(int position) {
+        mDataset.remove(position);
+        notifyItemRemoved(position);
+        notifyItemRangeChanged(position, mDataset.size());
+    }
+
 }

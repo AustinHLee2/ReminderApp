@@ -8,6 +8,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.TextView;
 
@@ -53,11 +54,4 @@ public class MainActivity extends AppCompatActivity {
         mAdapter = new MyAdapter(myDataset.getTasks());
         mRecyclerView.setAdapter(mAdapter);
     }
-
-    /*private void createData(){
-        for (int i = 0; i < 30; i++){
-            Task task = new Task("#" + Integer.toString(i) + " task name");
-            myDataset[i] = task;
-        }
-    }*/
 }

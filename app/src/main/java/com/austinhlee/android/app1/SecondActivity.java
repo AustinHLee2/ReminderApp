@@ -1,16 +1,15 @@
 package com.austinhlee.android.app1;
 
-import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
 
 public class SecondActivity extends AppCompatActivity {
 
     private Button mButton;
+    private Button mTimeButton;
     private EditText mEditText;
 
     @Override
@@ -30,6 +29,7 @@ public class SecondActivity extends AppCompatActivity {
             }
         });
 
-
+        mTimeButton = (Button) findViewById(R.id.pickTimeButton);
     }
+
 }

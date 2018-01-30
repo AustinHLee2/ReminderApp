@@ -1,8 +1,6 @@
 package com.austinhlee.android.app1;
 
 import android.content.Context;
-import android.provider.ContactsContract;
-
 import java.util.ArrayList;
 import java.util.List;
 

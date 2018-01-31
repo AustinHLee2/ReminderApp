@@ -10,12 +10,13 @@ public class Task {
 
     private String mTaskName;
     private Date mDate;
+    private String mDueDate;
 
     public Task(String taskName){
 
         mTaskName = taskName;
         mDate = new Date();
-
+        mDueDate = new String();
     }
 
     public String getTaskName() {
@@ -34,4 +35,11 @@ public class Task {
         mDate = date;
     }
 
+    public String getDueDate() {
+        return mDueDate;
+    }
+
+    public void setDueDate(String dueDate) {
+        mDueDate = dueDate;
+    }
 }

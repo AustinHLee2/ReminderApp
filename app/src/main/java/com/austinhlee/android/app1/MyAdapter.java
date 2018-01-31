@@ -24,6 +24,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
 
         public TextView mTaskName;
         public TextView mDateTextView;
+        public TextView mDueDateTextview;
         public CheckBox mCheckBox;
 
         public ViewHolder(CardView v){
@@ -31,6 +32,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
             mTaskName = v.findViewById(R.id.taskNameTextView);
             mDateTextView = v.findViewById(R.id.dateTextView);
             mCheckBox = v.findViewById(R.id.taskCheckBox);
+            mDueDateTextview = v.findViewById(R.id.dueDateTextView);
             v.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -60,6 +62,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
     public void onBindViewHolder(MyAdapter.ViewHolder holder, int position) {
         holder.mTaskName.setText(mDataset.get(position).getTaskName());
         holder.mDateTextView.setText(mDataset.get(position).getDate().toString());
+        holder.mDueDateTextview.setText(mDataset.get(position).getDueDate().toString());
 
     }
 

@@ -1,5 +1,6 @@
 package com.austinhlee.android.app1;
 
+import android.content.Context;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -9,7 +10,12 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 
+import java.util.Collections;
+import java.util.Comparator;
+
 public class MainActivity extends AppCompatActivity {
+
+    private Context mContext;
 
     private RecyclerView mRecyclerView;
     private RecyclerView.Adapter mAdapter;
@@ -20,7 +26,6 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
         updateUI();
 
     }
@@ -49,6 +54,37 @@ public class MainActivity extends AppCompatActivity {
             case R.id.action_sort:
                 // User chose the "Favorite" action, mark the current item
                 // as a favorite...
+                return true;
+
+            case R.id.sort_by_alphabetical:
+                Collections.sort(myDataset.get(mContext).getTasks(), new Comparator<Task>() {
+                    @Override
+                    public int compare(Task firstTask, Task secondTask) {
+                        return firstTask.getTaskName().compareTo(secondTask.getTaskName());
+                    }
+                });
+                mAdapter.notifyDataSetChanged();
+                return true;
+
+            case R.id.sort_by_create:
+                Collections.sort(myDataset.get(mContext).getTasks(), new Comparator<Task>() {
+                    @Override
+                    public int compare(Task firstTask, Task secondTask) {
+                        return firstTask.getDate().compareTo(secondTask.getDate());
+                    }
+                });
+                mAdapter.notifyDataSetChanged();
+
+                return true;
+
+            case R.id.sort_by_due:
+                Collections.sort(myDataset.get(mContext).getTasks(), new Comparator<Task>() {
+                    @Override
+                    public int compare(Task firstTask, Task secondTask) {
+                        return firstTask.getDueDate().compareTo(secondTask.getDueDate());
+                    }
+                });
+                mAdapter.notifyDataSetChanged();
                 return true;
 
             case R.id.action_options:

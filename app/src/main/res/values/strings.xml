@@ -7,5 +7,7 @@
     <string name="sort">Sort</string>
     <string name="options">Options</string>
     <string name="create">Create</string>
-
+    <string name="due_date">Due Date</string>
+    <string name="create_date">Creation Date</string>
+    <string name="alphabetical">Alphabetical</string>
 </resources>

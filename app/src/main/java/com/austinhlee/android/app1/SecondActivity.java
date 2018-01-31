@@ -11,6 +11,10 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 public class SecondActivity extends AppCompatActivity{
 
     private Button mTimeButton;
@@ -44,15 +48,16 @@ public class SecondActivity extends AppCompatActivity{
         mDatePickerFragment.show(getSupportFragmentManager(), "datePicker");
     }
 
-    private String formatDueDate(int month, int day, int year, int hour, int minute){
-        String formattedMinute;
-        if (minute < 10){
-            formattedMinute = "0" + minute;
+    private String formatDueDate(int month, int day, int year, int hour, int min){
+        String dateInString = "" + month + "/" + day + "/" + year + ", "  + hour + ":" +  min;
+        SimpleDateFormat formatter = new SimpleDateFormat("MM/dd/yyyy, HH:mm");
+        Date date = null;
+        try {
+            date = formatter.parse(dateInString);
+        } catch (ParseException e) {
+            e.printStackTrace();
         }
-        else{
-            formattedMinute = Integer.toString(minute);
-        }
-        return month + "/" + day + "/" + year + ", " + hour + ":" + formattedMinute;
+        return formatter.format(date);
     }
 
     @Override

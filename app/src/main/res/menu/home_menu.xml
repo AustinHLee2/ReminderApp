@@ -13,7 +13,17 @@
     <!-- Settings, should always be in the overflow -->
     <item android:id="@+id/action_sort"
         android:title="@string/sort"
-        app:showAsAction="never"/>
+        app:showAsAction="never">
+        <menu android:id="@+id/sort_menu">
+            <item android:id="@+id/sort_by_create"
+                android:title="@string/create_date"/>
+            <item android:id="@+id/sort_by_due"
+                android:title="@string/due_date"/>
+            <item android:id="@+id/sort_by_alphabetical"
+                android:title="@string/alphabetical"/>
+        </menu>
+
+    </item>
 
     <item android:id="@+id/action_options"
         android:title="@string/options"

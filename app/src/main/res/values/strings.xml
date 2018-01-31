@@ -3,4 +3,7 @@
     <string name="task_name_hint">Enter Task Name</string>
     <string name="create_task_button">Create Task</string>
     <string name="pick_time">Set Time</string>
+    <string name="sort">Sort</string>
+    <string name="options">Options</string>
+    <string name="create">Create</string>
 </resources>

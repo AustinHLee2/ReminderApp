@@ -14,6 +14,7 @@ Creating a new task
 
 ### To-do list/Planned features
 
+- [ ] Improve create task UI
 - [ ] Add ability for users to delete tasks
 - [ ] Let user choose between compact and detail view
 - [ ] Let user drag and drop to rearrange task ordering

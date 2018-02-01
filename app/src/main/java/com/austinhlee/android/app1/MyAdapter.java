@@ -10,8 +10,6 @@ import android.widget.CompoundButton;
 import android.widget.TextView;
 
 import java.text.DateFormat;
-import java.text.DateFormatSymbols;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
@@ -58,7 +56,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
     }
 
     public MyAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        CardView v = (CardView) LayoutInflater.from(parent.getContext()).inflate(R.layout.item_layout,parent,false);
+        CardView v = (CardView) LayoutInflater.from(parent.getContext()).inflate(R.layout.item_layout_compact,parent,false);
         ViewHolder vh = new ViewHolder(v);
         return vh;
     }

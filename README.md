@@ -18,3 +18,4 @@ Creating a new task
 - [ ] Add ability for users to delete tasks
 - [ ] Let user choose between compact and detail view
 - [ ] Let user drag and drop to rearrange task ordering
+- [ ] Ability to make multiple lists

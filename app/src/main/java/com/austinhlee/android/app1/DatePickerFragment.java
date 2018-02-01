@@ -16,7 +16,6 @@ public class DatePickerFragment extends DialogFragment
     int mYear;
     int mMonth;
     int mDay;
-    int mTextView;
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {

@@ -9,6 +9,11 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.TextView;
 
+import java.text.DateFormat;
+import java.text.DateFormatSymbols;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 
@@ -30,7 +35,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
         public ViewHolder(CardView v){
             super(v);
             mTaskName = v.findViewById(R.id.taskNameTextView);
-            mDateTextView = v.findViewById(R.id.dateTextView);
+//            mDateTextView = v.findViewById(R.id.dateTextView);
             mCheckBox = v.findViewById(R.id.taskCheckBox);
             mDueDateTextview = v.findViewById(R.id.dueDateTextView);
             v.setOnClickListener(new View.OnClickListener() {
@@ -61,9 +66,8 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
     @Override
     public void onBindViewHolder(MyAdapter.ViewHolder holder, int position) {
         holder.mTaskName.setText(mDataset.get(position).getTaskName());
-        holder.mDateTextView.setText(mDataset.get(position).getDate().toString());
-        holder.mDueDateTextview.setText(mDataset.get(position).getDueDate().toString());
-
+//        holder.mDateTextView.setText(mDataset.get(position).getDate().toString());
+        holder.mDueDateTextview.setText(formatDueDate(mDataset.get(position).getDueDate()));
     }
 
     @Override
@@ -75,6 +79,12 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
         mDataset.remove(position);
         notifyItemRemoved(position);
         notifyItemRangeChanged(position, mDataset.size());
+    }
+
+    private String formatDueDate(Date date){
+        DateFormat df4 = new SimpleDateFormat("dd MMM yy");
+        String str2 = df4.format(date);
+        return str2;
     }
 
 }

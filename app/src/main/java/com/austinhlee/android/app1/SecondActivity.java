@@ -9,10 +9,11 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
 
+import java.text.DateFormatSymbols;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 
 public class SecondActivity extends AppCompatActivity{
@@ -48,18 +49,6 @@ public class SecondActivity extends AppCompatActivity{
         mDatePickerFragment.show(getSupportFragmentManager(), "datePicker");
     }
 
-    private String formatDueDate(int month, int day, int year, int hour, int min){
-        String dateInString = "" + month + "/" + day + "/" + year + ", "  + hour + ":" +  min;
-        SimpleDateFormat formatter = new SimpleDateFormat("MM/dd/yyyy, HH:mm");
-        Date date = null;
-        try {
-            date = formatter.parse(dateInString);
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-        return formatter.format(date);
-    }
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
@@ -71,7 +60,10 @@ public class SecondActivity extends AppCompatActivity{
         switch (item.getItemId()) {
             case R.id.action_submit:
                 mTask.setTaskName(mEditText.getText().toString());
-                mTask.setDueDate(formatDueDate(mDatePickerFragment.getMonth(),mDatePickerFragment.getDay(),mDatePickerFragment.getYear(),mTimePickerFragment.getHour(),mTimePickerFragment.getMinute()));
+                Calendar calendar = Calendar.getInstance();
+                calendar.set(mDatePickerFragment.getYear(), mDatePickerFragment.getMonth(), mDatePickerFragment.getDay());
+                Date date = calendar.getTime();
+                mTask.setDueDate(date);
                 Database.get(getApplicationContext()).addTask(mTask);
                 finish();
 

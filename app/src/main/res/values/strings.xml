@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">App1</string>
+    <string name="app_name">Reminders</string>
     <string name="task_name_hint">Enter Task Name</string>
     <string name="create_task_button">Create Task</string>
     <string name="pick_time">Set Time</string>
@@ -10,4 +10,8 @@
     <string name="due_date">Due Date</string>
     <string name="create_date">Creation Date</string>
     <string name="alphabetical">Alphabetical</string>
+    <string name="edit">Edit</string>
+    <string name="changeView">Change View</string>
+    <string name="detailed_view">Detailed</string>
+    <string name="compact_view">Compact</string>
 </resources>

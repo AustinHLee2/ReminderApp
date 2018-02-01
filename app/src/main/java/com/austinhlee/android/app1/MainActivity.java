@@ -1,5 +1,6 @@
 package com.austinhlee.android.app1;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
@@ -9,14 +10,19 @@ import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
 
+import java.text.DateFormatSymbols;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Date;
 
 public class MainActivity extends AppCompatActivity {
 
     private Context mContext;
-
+    private Activity mActivity;
     private RecyclerView mRecyclerView;
     private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
@@ -87,6 +93,15 @@ public class MainActivity extends AppCompatActivity {
                 mAdapter.notifyDataSetChanged();
                 return true;
 
+            case R.id.compact_view:
+                return true;
+
+            case R.id.detailed_view:
+                return true;
+
+            case R.id.action_edit:
+                return true;
+
             case R.id.action_options:
                 return true;
 
@@ -109,5 +124,9 @@ public class MainActivity extends AppCompatActivity {
         mAdapter = new MyAdapter(myDataset.getTasks());
         mRecyclerView.setAdapter(mAdapter);
 
+    }
+
+    private String converToComparableString(String date){
+        return null;
     }
 }

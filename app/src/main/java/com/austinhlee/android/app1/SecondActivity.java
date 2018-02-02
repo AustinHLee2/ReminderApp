@@ -1,6 +1,5 @@
 package com.austinhlee.android.app1;
 
-import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -10,9 +9,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
-import java.text.DateFormatSymbols;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -61,9 +57,11 @@ public class SecondActivity extends AppCompatActivity{
             case R.id.action_submit:
                 mTask.setTaskName(mEditText.getText().toString());
                 Calendar calendar = Calendar.getInstance();
-                calendar.set(mDatePickerFragment.getYear(), mDatePickerFragment.getMonth(), mDatePickerFragment.getDay());
+                calendar.set(mDatePickerFragment.getYear(), mDatePickerFragment.getMonth()-1, mDatePickerFragment.getDay());
                 Date date = calendar.getTime();
-                mTask.setDueDate(date);
+                if (mTimePickerFragment.mOpened) {
+                    mTask.setDueDate(date);
+                }
                 Database.get(getApplicationContext()).addTask(mTask);
                 finish();
 

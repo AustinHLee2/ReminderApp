@@ -14,6 +14,7 @@ public class TimePickerFragment extends DialogFragment
 
     int mHour;
     int mMinute;
+    boolean mOpened;
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
@@ -28,6 +29,7 @@ public class TimePickerFragment extends DialogFragment
     }
 
     public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+        mOpened = true;
         mHour = hourOfDay;
         mMinute = minute;
     }

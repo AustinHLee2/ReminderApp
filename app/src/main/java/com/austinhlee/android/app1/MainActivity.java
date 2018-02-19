@@ -10,11 +10,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.View;
 
-import java.text.DateFormatSymbols;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
@@ -27,12 +23,22 @@ public class MainActivity extends AppCompatActivity {
     private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
     private Database myDataset;
+    private Task mTask;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        mContext = this;
         setContentView(R.layout.activity_main);
-        updateUI();
+        myDataset = Database.get(this);
+
+        mRecyclerView = (RecyclerView) findViewById(R.id.my_recycler_view);
+
+        mLayoutManager = new LinearLayoutManager(this);
+        mRecyclerView.setLayoutManager(mLayoutManager);
+
+        mAdapter = new MyAdapter(myDataset.getTasks());
+        mRecyclerView.setAdapter(mAdapter);
 
     }
 
@@ -53,8 +59,8 @@ public class MainActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_add:
-                Intent intent = new Intent(MainActivity.this, SecondActivity.class);
-                startActivity(intent);
+                Intent intent = new Intent(mContext, SecondActivity.class);
+                startActivityForResult(intent,1);
                 return true;
 
             case R.id.action_sort:
@@ -76,7 +82,7 @@ public class MainActivity extends AppCompatActivity {
                 Collections.sort(myDataset.get(mContext).getTasks(), new Comparator<Task>() {
                     @Override
                     public int compare(Task firstTask, Task secondTask) {
-                        return firstTask.getDate().compareTo(secondTask.getDate());
+                        return firstTask.getCreationDate().compareTo(secondTask.getCreationDate());
                     }
                 });
                 mAdapter.notifyDataSetChanged();
@@ -113,20 +119,23 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    private void updateUI(){
-        myDataset = Database.get(this);
-
-        mRecyclerView = (RecyclerView) findViewById(R.id.my_recycler_view);
-
-        mLayoutManager = new LinearLayoutManager(this);
-        mRecyclerView.setLayoutManager(mLayoutManager);
-
-        mAdapter = new MyAdapter(myDataset.getTasks());
-        mRecyclerView.setAdapter(mAdapter);
-
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data){
+        super.onActivityResult(requestCode,resultCode,data);
+        if (requestCode == 1){
+            if (resultCode == RESULT_OK) {
+                mTask = new Task();
+                String taskName = data.getStringExtra("taskName");
+                Date date = (Date)data.getSerializableExtra("dueDate");
+                mTask.setTaskName(taskName);
+                mTask.setDueDate(date);
+                myDataset.addTask(mTask);
+                mAdapter.notifyDataSetChanged();
+            }
+        }
     }
 
-    private String converToComparableString(String date){
-        return null;
+    private void updateUI(){
+
     }
 }

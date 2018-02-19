@@ -9,16 +9,9 @@ import java.util.Date;
 public class Task {
 
     private String mTaskName;
-    private Date mDate;
-//    private String mDueDate;
+    private Date mCreationDate;
     private Date mDueDate;
 
-    public Task(String taskName){
-
-        mTaskName = taskName;
-        mDate = new Date();
-        mDueDate = new Date();
-    }
 
     public String getTaskName() {
         return mTaskName;
@@ -28,12 +21,12 @@ public class Task {
         mTaskName = taskName;
     }
 
-    public Date getDate() {
-        return mDate;
+    public Date getCreationDate() {
+        return mCreationDate;
     }
 
-    public void setDate(Date date) {
-        mDate = date;
+    public void setCreationDate(Date creationDate) {
+        mCreationDate = creationDate;
     }
 
     public Date getDueDate() {

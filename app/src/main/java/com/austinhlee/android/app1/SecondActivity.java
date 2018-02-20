@@ -1,5 +1,7 @@
 package com.austinhlee.android.app1;
 
+import android.content.Context;
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -16,7 +18,7 @@ public class SecondActivity extends AppCompatActivity{
 
     private Button mTimeButton;
     private EditText mEditText;
-    private Task mTask;
+    private Context mContext;
     private TimePickerFragment mTimePickerFragment;
     private DatePickerFragment mDatePickerFragment;
 
@@ -25,14 +27,13 @@ public class SecondActivity extends AppCompatActivity{
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_second);
+        mContext = this;
 
         mTimePickerFragment = new TimePickerFragment();
 
         mDatePickerFragment = new DatePickerFragment();
 
         mEditText = (EditText) findViewById(R.id.taskNameEditText);
-
-        mTask = new Task("_");
 
         mTimeButton = (Button) findViewById(R.id.pickTimeButton);
     }
@@ -55,14 +56,13 @@ public class SecondActivity extends AppCompatActivity{
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_submit:
-                mTask.setTaskName(mEditText.getText().toString());
+                Intent intent = new Intent();
+                intent.putExtra("taskName", mEditText.getText().toString());
                 Calendar calendar = Calendar.getInstance();
-                calendar.set(mDatePickerFragment.getYear(), mDatePickerFragment.getMonth()-1, mDatePickerFragment.getDay());
+                calendar.set(mDatePickerFragment.getYear(), mDatePickerFragment.getMonth()-1, mDatePickerFragment.getDay(), mTimePickerFragment.getHour(), mTimePickerFragment.getMinute());
                 Date date = calendar.getTime();
-                if (mTimePickerFragment.mOpened) {
-                    mTask.setDueDate(date);
-                }
-                Database.get(getApplicationContext()).addTask(mTask);
+                intent.putExtra("dueDate", date);
+                setResult(RESULT_OK, intent);
                 finish();
 
             default:

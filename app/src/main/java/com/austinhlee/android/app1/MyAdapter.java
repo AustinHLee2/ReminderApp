@@ -64,7 +64,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
     @Override
     public void onBindViewHolder(MyAdapter.ViewHolder holder, int position) {
         holder.mTaskName.setText(mDataset.get(position).getTaskName());
-//        holder.mDateTextView.setText(mDataset.get(position).getDate().toString());
+//        holder.mDateTextView.setText(mDataset.get(position).getCreationDate().toString());
         holder.mDueDateTextview.setText(formatDueDate(mDataset.get(position).getDueDate()));
     }
 

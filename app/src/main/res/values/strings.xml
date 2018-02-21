@@ -14,4 +14,6 @@
     <string name="changeView">Change View</string>
     <string name="detailed_view">Detailed</string>
     <string name="compact_view">Compact</string>
+    <string name="set_due_date">Set due date</string>
+    <string name="notification">Notification?</string>
 </resources>

@@ -15,56 +15,86 @@
             android:maxLines="1"
             android:hint="@string/task_name_hint"/>
 
+        <CheckBox
+            android:id="@+id/setDueDateCheckBox"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Set due date"/>
+
+
         <LinearLayout
-            android:gravity="center"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
 
             <LinearLayout
+                android:gravity="center"
+                android:visibility="invisible"
+                tools:visibility="visible"
+                android:id="@+id/setDueDateLinearLayout"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="vertical">
+                android:orientation="horizontal">
 
-                <Button
-                    android:id="@+id/pickTimeButton"
+                <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/pick_time"
-                    android:onClick="showTimePickerDialog" />
+                    android:orientation="vertical">
 
-                <TextView
-                    android:id="@+id/time_preview"
-                    android:visibility="invisible"
+                    <Button
+                        android:id="@+id/pickTimeButton"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/pick_time"
+                        android:onClick="showTimePickerDialog" />
+
+                    <TextView
+                        android:id="@+id/time_preview"
+                        android:visibility="invisible"
+                        tools:visibility="visible"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        tools:text="17:38"
+                        android:text="time" />
+
+                </LinearLayout>
+
+                <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="time"/>
+                    android:orientation="vertical">
+
+                    <Button
+                        android:id="@+id/pickDateButton"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/pick_date"
+                        android:onClick="showDatePickerDialog"
+                        android:layout_toRightOf="@id/pickTimeButton"/>
+
+                    <TextView
+                        android:id="@+id/date_preview"
+                        android:visibility="invisible"
+                        tools:visibility="visible"
+                        tools:text="4/20/2018"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
+
+                </LinearLayout>
 
             </LinearLayout>
 
-
-            <LinearLayout
+            <CheckBox
+                android:id="@+id/notificationCheckBox"
+                android:visibility="invisible"
+                tools:visibility="visible"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="vertical">
+                android:layout_gravity="center"
+                android:text="@string/notification"/>
 
-                <Button
-                    android:id="@+id/pickDateButton"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/pick_date"
-                    android:onClick="showDatePickerDialog"
-                    android:layout_toRightOf="@id/pickTimeButton"/>
 
-                <TextView
-                    android:id="@+id/date_preview"
-                    android:visibility="invisible"
-
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="date"/>
-
-            </LinearLayout>
-
-        </LinearLayout>
+    </LinearLayout>
 
 </LinearLayout>
+

@@ -5,6 +5,7 @@ import android.app.Dialog;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.view.View;
+import android.widget.CheckBox;
 import android.widget.DatePicker;
 import android.widget.TextView;
 
@@ -16,7 +17,8 @@ public class DatePickerFragment extends DialogFragment
     int mYear;
     int mMonth;
     int mDay;
-    TextView mTextView;
+    private TextView mTextView;
+    private CheckBox mCheckBox;
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
@@ -24,7 +26,7 @@ public class DatePickerFragment extends DialogFragment
         final Calendar c = Calendar.getInstance();
 
         mTextView = (TextView)getActivity().findViewById(R.id.date_preview);
-
+        mCheckBox = (CheckBox)getActivity().findViewById(R.id.notificationCheckBox);
         // Create a new instance of TimePickerDialog and return it
         return new DatePickerDialog(getActivity(), this, c.get(Calendar.YEAR),c.get(Calendar.MONTH),c.get(Calendar.DAY_OF_MONTH));
     }
@@ -47,6 +49,7 @@ public class DatePickerFragment extends DialogFragment
         mMonth = month+1;
         mDay = day;
         mTextView.setVisibility(View.VISIBLE);
+        mCheckBox.setVisibility(View.VISIBLE);
         mTextView.setText((month+1)+"/"+day+"/"+year);
     }
 }

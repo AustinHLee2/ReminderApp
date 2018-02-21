@@ -11,7 +11,10 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import java.util.Calendar;
@@ -26,8 +29,10 @@ public class SecondActivity extends AppCompatActivity{
     private DatePickerFragment mDatePickerFragment;
     private TextView mTimePreview;
     private TextView mDatePreview;
+    private CheckBox mCheckBox;
+    private CheckBox mNotificationCheckBox;
     private Boolean mTaskNameHasInput;
-
+    private LinearLayout mLinearLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,9 +41,32 @@ public class SecondActivity extends AppCompatActivity{
         mContext = this;
         mTaskNameHasInput = false;
 
+        mLinearLayout = (LinearLayout)findViewById(R.id.setDueDateLinearLayout);
         mTimePickerFragment = new TimePickerFragment();
 
+        mNotificationCheckBox = (CheckBox)findViewById(R.id.notificationCheckBox);
+
         mDatePickerFragment = new DatePickerFragment();
+
+        mCheckBox = (CheckBox)findViewById(R.id.setDueDateCheckBox);
+        mCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
+                    if (isChecked){
+                       mLinearLayout.setVisibility(View.VISIBLE);
+                       mNotificationCheckBox.setChecked(false);
+                       if (mDatePreview.getVisibility() == View.VISIBLE){
+                           mNotificationCheckBox.setVisibility(View.VISIBLE);
+                           mDatePreview.setVisibility(View.INVISIBLE);
+                           mTimePreview.setVisibility(View.INVISIBLE);
+                       }
+                    }
+                    else {
+                        mLinearLayout.setVisibility(View.INVISIBLE);
+                        mNotificationCheckBox.setVisibility(View.INVISIBLE);
+                    }
+            }
+        });
 
         mEditText = (EditText) findViewById(R.id.taskNameEditText);
         mEditText.addTextChangedListener(new TextWatcher() {
@@ -106,7 +134,7 @@ public class SecondActivity extends AppCompatActivity{
                 Date date = calendar.getTime();
                 intent.putExtra("creationDate", date);
                 intent.putExtra("dueDateSet", false);
-                if (mDatePreview.getVisibility() == View.VISIBLE) {
+            if (mCheckBox.isChecked() && mDatePreview.getVisibility() == View.VISIBLE) {
                     calendar.set(mDatePickerFragment.getYear(), mDatePickerFragment.getMonth() - 1, mDatePickerFragment.getDay(), mTimePickerFragment.getHour(), mTimePickerFragment.getMinute());
                     date = calendar.getTime();
                     intent.putExtra("dueDateSet", true);

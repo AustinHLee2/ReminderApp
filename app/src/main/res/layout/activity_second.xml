@@ -1,37 +1,70 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:orientation="vertical"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context="com.austinhlee.android.app1.SecondActivity">
+<LinearLayout
+        android:layout_width="match_parent"
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:gravity="center"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
-    <EditText
-        android:id="@+id/taskNameEditText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:inputType="text"
-        android:maxLines="1"
-        android:hint="@string/task_name_hint"/>
+        <EditText
+            android:id="@+id/taskNameEditText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:inputType="text"
+            android:maxLines="1"
+            android:hint="@string/task_name_hint"/>
+
+        <LinearLayout
+            android:gravity="center"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <Button
+                    android:id="@+id/pickTimeButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/pick_time"
+                    android:onClick="showTimePickerDialog" />
+
+                <TextView
+                    android:id="@+id/time_preview"
+                    android:visibility="invisible"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="time"/>
+
+            </LinearLayout>
 
 
-    <Button
-        android:id="@+id/pickTimeButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/pick_time"
-        android:onClick="showTimePickerDialog"
-        android:layout_below="@id/taskNameEditText"/>
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
 
-    <Button
-        android:id="@+id/pickDateButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/pick_date"
-        android:onClick="showDatePickerDialog"
-        android:layout_below="@id/taskNameEditText"
-        android:layout_toRightOf="@id/pickTimeButton"/>
+                <Button
+                    android:id="@+id/pickDateButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/pick_date"
+                    android:onClick="showDatePickerDialog"
+                    android:layout_toRightOf="@id/pickTimeButton"/>
 
+                <TextView
+                    android:id="@+id/date_preview"
+                    android:visibility="invisible"
 
-</RelativeLayout>
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="date"/>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+</LinearLayout>

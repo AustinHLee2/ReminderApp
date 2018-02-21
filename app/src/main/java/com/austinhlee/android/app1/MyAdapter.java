@@ -1,12 +1,18 @@
 package com.austinhlee.android.app1;
 
+import android.content.Context;
+import android.content.Intent;
+import android.support.v4.view.MotionEventCompat;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.text.DateFormat;
@@ -22,6 +28,7 @@ import java.util.List;
 public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
 
     private static List<Task> mDataset;
+    private ItemTouchHelper touchHelper;
 
     public class ViewHolder extends RecyclerView.ViewHolder{
 
@@ -29,9 +36,13 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
         public TextView mDateTextView;
         public TextView mDueDateTextview;
         public CheckBox mCheckBox;
+        public Context mContext;
+        public Task mTask;
+        public ImageView mImageView;
 
         public ViewHolder(CardView v){
             super(v);
+            mContext = v.getContext();
             mTaskName = v.findViewById(R.id.taskNameTextView);
 //            mDateTextView = v.findViewById(R.id.dateTextView);
             mCheckBox = v.findViewById(R.id.taskCheckBox);
@@ -39,13 +50,23 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
             v.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
+                    mTask = mDataset.get(getAdapterPosition());
+                    Intent intent = new Intent(mContext,TaskDetailActivity.class);
+                    intent.putExtra("taskName", mTask.getTaskName());
+                    if (mTask.getDueDate() != null) {
+                        intent.putExtra("taskDueDate", mTask.getDueDate());
+                    }
+                    intent.putExtra("taskCreationDate", mTask.getCreationDate());
+                    mContext.startActivity(intent);
                     System.out.println("hello");
                 }
             });
             mCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                 @Override
-                public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                   removeItem(getAdapterPosition());
+                public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
+                    if (isChecked) {
+                        removeItem(getAdapterPosition());
+                    }
                 }
             });
         }
@@ -64,14 +85,21 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
     @Override
     public void onBindViewHolder(MyAdapter.ViewHolder holder, int position) {
         holder.mTaskName.setText(mDataset.get(position).getTaskName());
+        holder.mDueDateTextview.setVisibility(View.INVISIBLE);
+        holder.mCheckBox.setChecked(false);
 //        holder.mDateTextView.setText(mDataset.get(position).getCreationDate().toString());
-        holder.mDueDateTextview.setText(formatDueDate(mDataset.get(position).getDueDate()));
+        if (mDataset.get(position).getDueDate() != null) {
+            holder.mDueDateTextview.setVisibility(View.VISIBLE);
+            holder.mDueDateTextview.setText(formatDueDate(mDataset.get(position).getDueDate()));
+        }
     }
+
 
     @Override
     public int getItemCount() {
         return mDataset.size();
     }
+
 
     private void removeItem(int position) {
         mDataset.remove(position);

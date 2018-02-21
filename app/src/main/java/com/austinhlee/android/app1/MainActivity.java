@@ -1,12 +1,12 @@
 package com.austinhlee.android.app1;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -18,7 +18,6 @@ import java.util.Date;
 public class MainActivity extends AppCompatActivity {
 
     private Context mContext;
-    private Activity mActivity;
     private RecyclerView mRecyclerView;
     private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
@@ -37,15 +36,10 @@ public class MainActivity extends AppCompatActivity {
         mLayoutManager = new LinearLayoutManager(this);
         mRecyclerView.setLayoutManager(mLayoutManager);
 
+
         mAdapter = new MyAdapter(myDataset.getTasks());
         mRecyclerView.setAdapter(mAdapter);
 
-    }
-
-    @Override
-    public void onResume(){
-        super.onResume();
-        updateUI();
     }
 
     @Override
@@ -126,16 +120,17 @@ public class MainActivity extends AppCompatActivity {
             if (resultCode == RESULT_OK) {
                 mTask = new Task();
                 String taskName = data.getStringExtra("taskName");
-                Date date = (Date)data.getSerializableExtra("dueDate");
+                Boolean dueDateSet = data.getBooleanExtra("dueDateSet",false);
+                if (dueDateSet) {
+                    Date dueDate = (Date) data.getSerializableExtra("dueDate");
+                    mTask.setDueDate(dueDate);
+                }
+                Date creationDate = (Date)data.getSerializableExtra("creationDate");
                 mTask.setTaskName(taskName);
-                mTask.setDueDate(date);
+                mTask.setCreationDate(creationDate);
                 myDataset.addTask(mTask);
                 mAdapter.notifyDataSetChanged();
             }
         }
-    }
-
-    private void updateUI(){
-
     }
 }

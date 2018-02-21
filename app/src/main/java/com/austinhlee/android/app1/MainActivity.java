@@ -87,7 +87,13 @@ public class MainActivity extends AppCompatActivity {
                 Collections.sort(myDataset.get(mContext).getTasks(), new Comparator<Task>() {
                     @Override
                     public int compare(Task firstTask, Task secondTask) {
-                        return firstTask.getDueDate().compareTo(secondTask.getDueDate());
+                        if (firstTask.getDueDate() == null) {
+                            return (secondTask.getDueDate() == null) ? 0 : -1;
+                        }
+                        if (secondTask.getDueDate() == null) {
+                            return 1;
+                        }
+                        return secondTask.getDueDate().compareTo(firstTask.getDueDate());
                     }
                 });
                 mAdapter.notifyDataSetChanged();

@@ -19,6 +19,8 @@ import android.widget.TextView;
 
 import java.util.Calendar;
 import java.util.Date;
+import java.util.UUID;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class SecondActivity extends AppCompatActivity{
 
@@ -41,6 +43,12 @@ public class SecondActivity extends AppCompatActivity{
         mContext = this;
         mTaskNameHasInput = false;
 
+        mTimeButton = (Button) findViewById(R.id.pickTimeButton);
+
+        mTimePreview = (TextView) findViewById(R.id.time_preview);
+
+        mDatePreview = (TextView) findViewById(R.id.date_preview);
+
         mLinearLayout = (LinearLayout)findViewById(R.id.setDueDateLinearLayout);
         mTimePickerFragment = new TimePickerFragment();
 
@@ -56,7 +64,6 @@ public class SecondActivity extends AppCompatActivity{
                        mLinearLayout.setVisibility(View.VISIBLE);
                        mNotificationCheckBox.setChecked(false);
                        if (mDatePreview.getVisibility() == View.VISIBLE){
-                           mNotificationCheckBox.setVisibility(View.VISIBLE);
                            mDatePreview.setVisibility(View.INVISIBLE);
                            mTimePreview.setVisibility(View.INVISIBLE);
                        }
@@ -90,13 +97,6 @@ public class SecondActivity extends AppCompatActivity{
 
             }
         });
-
-        mTimeButton = (Button) findViewById(R.id.pickTimeButton);
-
-        mTimePreview = (TextView) findViewById(R.id.time_preview);
-
-        mDatePreview = (TextView) findViewById(R.id.date_preview);
-
 
     }
 
@@ -134,12 +134,11 @@ public class SecondActivity extends AppCompatActivity{
                 Date date = calendar.getTime();
                 intent.putExtra("creationDate", date);
                 intent.putExtra("dueDateSet", false);
-            if (mCheckBox.isChecked() && mDatePreview.getVisibility() == View.VISIBLE) {
-                    calendar.set(mDatePickerFragment.getYear(), mDatePickerFragment.getMonth() - 1, mDatePickerFragment.getDay(), mTimePickerFragment.getHour(), mTimePickerFragment.getMinute());
+            if (mNotificationCheckBox.isChecked() && mDatePreview.getVisibility() == View.VISIBLE) {
+                    calendar.set(mDatePickerFragment.getYear(), mDatePickerFragment.getMonth(), mDatePickerFragment.getDay(), mTimePickerFragment.getHour(), mTimePickerFragment.getMinute());
                     date = calendar.getTime();
-                    intent.putExtra("dueDateSet", true);
                     intent.putExtra("dueDate", date);
-                }
+                    intent.putExtra("setNotification", true);}
                 setResult(RESULT_OK, intent);
                 finish();
 

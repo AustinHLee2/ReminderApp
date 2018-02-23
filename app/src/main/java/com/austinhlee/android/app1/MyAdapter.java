@@ -33,12 +33,10 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
     public class ViewHolder extends RecyclerView.ViewHolder{
 
         public TextView mTaskName;
-        public TextView mDateTextView;
         public TextView mDueDateTextview;
         public CheckBox mCheckBox;
         public Context mContext;
         public Task mTask;
-        public ImageView mImageView;
 
         public ViewHolder(CardView v){
             super(v);
@@ -65,6 +63,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
                 @Override
                 public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
                     if (isChecked) {
+                        NotificationScheduler.cancelReminder(mContext, AlarmReceiver.class, mDataset.get(getAdapterPosition()).getId());
                         removeItem(getAdapterPosition());
                     }
                 }

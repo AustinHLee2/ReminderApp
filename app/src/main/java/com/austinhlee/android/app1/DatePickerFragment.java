@@ -46,7 +46,7 @@ public class DatePickerFragment extends DialogFragment
     @Override
     public void onDateSet(DatePicker datePicker, int year, int month, int day) {
         mYear = year;
-        mMonth = month+1;
+        mMonth = month;
         mDay = day;
         mTextView.setVisibility(View.VISIBLE);
         mCheckBox.setVisibility(View.VISIBLE);

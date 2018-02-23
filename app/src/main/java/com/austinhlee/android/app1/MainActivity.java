@@ -10,9 +10,11 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 
+import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -125,10 +127,17 @@ public class MainActivity extends AppCompatActivity {
             if (resultCode == RESULT_OK) {
                 mTask = new Task();
                 String taskName = data.getStringExtra("taskName");
-                Boolean dueDateSet = data.getBooleanExtra("dueDateSet",false);
-                if (dueDateSet) {
+                if (data.hasExtra("dueDate")) {
                     Date dueDate = (Date) data.getSerializableExtra("dueDate");
+                    Calendar cal = Calendar.getInstance();
+                    cal.setTime(dueDate);
                     mTask.setDueDate(dueDate);
+                    if (data.getBooleanExtra("setNotification", false)){
+                        mTask.setId();
+                        NotificationScheduler.setReminder(mContext, AlarmReceiver.class, cal.get(Calendar.YEAR),
+                                cal.get(Calendar.MONTH), cal.get(Calendar.DAY_OF_MONTH),
+                                cal.get(Calendar.HOUR_OF_DAY), cal.get(Calendar.MINUTE), taskName, mTask.getId());
+                    }
                 }
                 Date creationDate = (Date)data.getSerializableExtra("creationDate");
                 mTask.setTaskName(taskName);

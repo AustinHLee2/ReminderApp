@@ -16,4 +16,5 @@
     <string name="compact_view">Compact</string>
     <string name="set_due_date">Set due date</string>
     <string name="notification">Notification?</string>
+    <string name="preference_file_key">"com.austinhlee.myapp.PREFERENCE_FILE_KEY</string>
 </resources>

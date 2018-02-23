@@ -21,7 +21,12 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.austinhlee.android.app1.MainActivity" />
         </activity>
-        <activity android:name=".TaskDetailActivity"></activity>
+        <activity android:name=".TaskDetailActivity" />
+
+        <receiver
+            android:name=".AlarmReceiver"
+            android:enabled="true"
+            android:exported="true"></receiver>
     </application>
 
 </manifest>

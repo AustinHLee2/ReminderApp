@@ -10,7 +10,7 @@ MainActivity             |  Main Menu
 
 Creating a new task
 :-------------------------:|
-![](https://s10.postimg.org/ifdmwt5rt/Create_Activity.png)
+![](https://s10.postimg.org/ojg2alt2h/Create_Activity_New.png)
 
 ### To-do list/Planned features
 

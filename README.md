@@ -2,6 +2,12 @@
 Android app that lets users create tasks. Tasks are displayed in a RecyclerView and can be assigned a due creationDate and time. Tasks save the creationDate they're created and can be sorted alphabetically, by due creationDate, or by creation creationDate.
 
 
+### Features
+- Scheduled notifications
+- List sorting (creation date, due date, alphabetical)
+
+
+
 
 MainActivity             |  Main Menu
 :-------------------------:|:-------------------------:
@@ -14,6 +20,7 @@ Creating a new task
 
 ### To-do list/Planned features
 
+- [X] Scheduled Notifications
 - [ ] Improve create task UI
 - [ ] Add ability for users to delete tasks
 - [ ] Let user choose between compact and detail view

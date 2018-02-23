@@ -1,5 +1,5 @@
 # Reminder App
-Android app that lets users create tasks. Tasks are displayed in a RecyclerView and can be assigned a due creationDate and time. Tasks save the creationDate they're created and can be sorted alphabetically, by due creationDate, or by creation creationDate.
+Android app that lets users create reminders.
 
 
 ### Features

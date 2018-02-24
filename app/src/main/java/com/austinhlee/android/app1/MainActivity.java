@@ -1,7 +1,10 @@
 package com.austinhlee.android.app1;
 
+import android.arch.lifecycle.Observer;
+import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.content.Intent;
+import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -9,39 +12,44 @@ import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
-import java.util.concurrent.atomic.AtomicInteger;
+import java.util.List;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.Executor;
+import java.util.concurrent.Executors;
 
 public class MainActivity extends AppCompatActivity {
 
     private Context mContext;
-    private RecyclerView mRecyclerView;
-    private RecyclerView.Adapter mAdapter;
-    private RecyclerView.LayoutManager mLayoutManager;
-    private Database myDataset;
-    private Task mTask;
+    private TaskViewModel mTaskViewModel;
+
+    public static final int NEW_TASK_ACTIVITY_REQUEST_CODE = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mContext = this;
         setContentView(R.layout.activity_main);
-        myDataset = Database.get(this);
+        mContext = this;
+        RecyclerView recyclerView = (RecyclerView)findViewById(R.id.my_recycler_view);
+        mTaskViewModel = ViewModelProviders.of(this).get(TaskViewModel.class);
+        final TaskListAdapter adapter = new TaskListAdapter(this, mTaskViewModel);
+        mTaskViewModel.getAllTasks().observe(this, new Observer<List<Task>>() {
+            @Override
+            public void onChanged(@Nullable List<Task> tasks) {
+                adapter.setTasks(tasks);
+            }
+        });
+        recyclerView.setAdapter(adapter);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-        mRecyclerView = (RecyclerView) findViewById(R.id.my_recycler_view);
-
-        mLayoutManager = new LinearLayoutManager(this);
-        mRecyclerView.setLayoutManager(mLayoutManager);
-
-
-        mAdapter = new MyAdapter(myDataset.getTasks());
-        mRecyclerView.setAdapter(mAdapter);
 
     }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -55,10 +63,10 @@ public class MainActivity extends AppCompatActivity {
         switch (item.getItemId()) {
             case R.id.action_add:
                 Intent intent = new Intent(mContext, SecondActivity.class);
-                startActivityForResult(intent,1);
+                startActivityForResult(intent,NEW_TASK_ACTIVITY_REQUEST_CODE);
                 return true;
 
-            case R.id.action_sort:
+            /*case R.id.action_sort:
                 // User chose the "Favorite" action, mark the current item
                 // as a favorite...
                 return true;
@@ -98,7 +106,7 @@ public class MainActivity extends AppCompatActivity {
                     }
                 });
                 mAdapter.notifyDataSetChanged();
-                return true;
+                return true;*/
 
             case R.id.compact_view:
                 return true;
@@ -123,28 +131,24 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data){
         super.onActivityResult(requestCode,resultCode,data);
-        if (requestCode == 1){
-            if (resultCode == RESULT_OK) {
-                mTask = new Task();
-                String taskName = data.getStringExtra("taskName");
-                if (data.hasExtra("dueDate")) {
-                    Date dueDate = (Date) data.getSerializableExtra("dueDate");
-                    Calendar cal = Calendar.getInstance();
+        Calendar cal = Calendar.getInstance();
+        if (requestCode == NEW_TASK_ACTIVITY_REQUEST_CODE && resultCode == RESULT_OK) {
+            Task task = new Task();
+            String taskTitle = data.getStringExtra(SecondActivity.EXTRA_TASK_NAME);
+            task.setTaskName(taskTitle);
+            task.setCreationDate((Date)data.getSerializableExtra(SecondActivity.EXTRA_TASK_CREATION_DATE));
+            if (data.hasExtra(SecondActivity.EXTRA_TASK_DUE_DATE)){
+                Date dueDate = (Date)data.getSerializableExtra(SecondActivity.EXTRA_TASK_DUE_DATE);
+                task.setDueDate(dueDate);
+                if (data.getBooleanExtra(SecondActivity.EXTRA_TASK_NOTIFACTION_SET, false)){
                     cal.setTime(dueDate);
-                    mTask.setDueDate(dueDate);
-                    if (data.getBooleanExtra("setNotification", false)){
-                        mTask.setId();
-                        NotificationScheduler.setReminder(mContext, AlarmReceiver.class, cal.get(Calendar.YEAR),
-                                cal.get(Calendar.MONTH), cal.get(Calendar.DAY_OF_MONTH),
-                                cal.get(Calendar.HOUR_OF_DAY), cal.get(Calendar.MINUTE), taskName, mTask.getId());
-                    }
+                    NotificationScheduler.setReminder(mContext, AlarmReceiver.class, dueDate, taskTitle, task.getId());
                 }
-                Date creationDate = (Date)data.getSerializableExtra("creationDate");
-                mTask.setTaskName(taskName);
-                mTask.setCreationDate(creationDate);
-                myDataset.addTask(mTask);
-                mAdapter.notifyDataSetChanged();
             }
+            mTaskViewModel.insert(task);
+            mTaskViewModel.deleteTask("task test");
+        } else {
+            Toast.makeText(mContext, "Must enter a task name!", Toast.LENGTH_LONG).show();
         }
     }
 }

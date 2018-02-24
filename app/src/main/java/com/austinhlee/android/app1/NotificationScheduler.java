@@ -11,6 +11,7 @@ import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.TaskStackBuilder;
 
 import java.util.Calendar;
+import java.util.Date;
 
 /**
  * Created by Austin Lee on 2/21/2018.
@@ -18,14 +19,9 @@ import java.util.Calendar;
 
 public class NotificationScheduler {
 
-    public static void setReminder(Context context, Class<?> cls, int year, int month, int day, int hour, int min, String taskTitle, int requestCode){
+    public static void setReminder(Context context, Class<?> cls, Date date, String taskTitle, int requestCode){
         Calendar calendar = Calendar.getInstance();
-        calendar.set(Calendar.YEAR, year);
-        calendar.set(Calendar.MONTH, month);
-        calendar.set(Calendar.DAY_OF_MONTH, day);
-        calendar.set(Calendar.HOUR_OF_DAY, hour);
-        calendar.set(Calendar.MINUTE, min);
-        calendar.set(Calendar.SECOND, 0);
+        calendar.setTime(date);
 
         ComponentName receiver = new ComponentName(context, cls);
         PackageManager pm = context.getPackageManager();

@@ -19,9 +19,6 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.Executor;
-import java.util.concurrent.Executors;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -32,9 +29,9 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        mContext = this;
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        mContext = this;
         RecyclerView recyclerView = (RecyclerView)findViewById(R.id.my_recycler_view);
         mTaskViewModel = ViewModelProviders.of(this).get(TaskViewModel.class);
         final TaskListAdapter adapter = new TaskListAdapter(this, mTaskViewModel);
@@ -46,7 +43,6 @@ public class MainActivity extends AppCompatActivity {
         });
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-
 
     }
 
@@ -146,7 +142,6 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
             mTaskViewModel.insert(task);
-            mTaskViewModel.deleteTask("task test");
         } else {
             Toast.makeText(mContext, "Must enter a task name!", Toast.LENGTH_LONG).show();
         }

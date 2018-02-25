@@ -25,6 +25,7 @@ public class TaskListAdapter extends RecyclerView.Adapter<TaskListAdapter.TaskVi
     private List<Task> mTaskList;
     private final LayoutInflater mInflater;
     private TaskViewModel mTaskViewModel;
+    private Context mContext;
 
     static class TaskViewHolder extends RecyclerView.ViewHolder {
 
@@ -43,6 +44,7 @@ public class TaskListAdapter extends RecyclerView.Adapter<TaskListAdapter.TaskVi
 
 
     public TaskListAdapter(Context context, TaskViewModel taskViewModel) {
+        mContext = context;
         mTaskViewModel = taskViewModel;
         mInflater = LayoutInflater.from(context);
     }
@@ -65,6 +67,9 @@ public class TaskListAdapter extends RecyclerView.Adapter<TaskListAdapter.TaskVi
                     if (isChecked) {
                         removeAt(position);
                         mTaskViewModel.deleteTask(current.getTaskName());
+                        if (current.getDueDate() != null) {
+                            NotificationScheduler.cancelReminder(mContext, AlarmReceiver.class, current.getId());
+                        }
                     }
                 }
             });

@@ -34,11 +34,11 @@ public abstract class AppDatabase extends RoomDatabase {
         @Override
         public void onOpen(@NonNull SupportSQLiteDatabase db) {
             super.onOpen(db);
-            new PopulateDbAsync(INSTANCE).execute();
+//            new PopulateDbAsync(INSTANCE).execute();
         }
     };
 
-    private static class PopulateDbAsync extends AsyncTask<Void, Void, Void> {
+   /* private static class PopulateDbAsync extends AsyncTask<Void, Void, Void> {
         private final TaskDao mDao;
 
         PopulateDbAsync(AppDatabase db){
@@ -53,5 +53,5 @@ public abstract class AppDatabase extends RoomDatabase {
             mDao.insert(task);
             return null;
         }
-    }
+    }*/
 }

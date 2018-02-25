@@ -55,12 +55,12 @@ public class NotificationScheduler {
         notificationManager.notify(_id, builder.build());
     }
 
-    public static void cancelReminder(Context context, Class<?> cls, int requestCode){
-        ComponentName receiver = new ComponentName(context, cls);
+    public static void cancelReminder(Context context, Class<?> myReceiver, int requestCode){
+        ComponentName receiver = new ComponentName(context, myReceiver);
         PackageManager pm = context.getPackageManager();
         pm.setComponentEnabledSetting(receiver, PackageManager.COMPONENT_ENABLED_STATE_DISABLED, PackageManager.DONT_KILL_APP);
 
-        Intent intent1 = new Intent(context, cls);
+        Intent intent1 = new Intent(context, myReceiver);
         PendingIntent pendingIntent = PendingIntent.getBroadcast(context, requestCode, intent1, PendingIntent.FLAG_UPDATE_CURRENT);
         AlarmManager am = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
         am.cancel(pendingIntent);

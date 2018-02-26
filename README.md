@@ -13,9 +13,8 @@ MainActivity             |  Main Menu
 :-------------------------:|:-------------------------:
 ![](https://s10.postimg.org/lm86gg5nd/Main_Activity.png)  |  ![](https://s10.postimg.org/c1ojtk8ll/Main_Menu.png)
 
-
-Creating a new task      |  Swipe to Delete
-:------------------------:|:-------------------------:
+Creating a new reminder             |  Swipe to delete gesture
+:-------------------------:|:-------------------------:
 <img src="https://s10.postimg.org/ojg2alt2h/Create_Activity_New.png" height="">|  ![](https://thumbs.gfycat.com/FlamboyantDistortedIcefish-size_restricted.gif)
 
 ### To-do list/Planned features

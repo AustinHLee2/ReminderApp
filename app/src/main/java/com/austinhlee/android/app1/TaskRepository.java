@@ -5,6 +5,7 @@ import android.arch.lifecycle.LiveData;
 import android.os.AsyncTask;
 
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 /**
  * Created by Austin Lee on 2/24/2018.
@@ -33,17 +34,14 @@ public class TaskRepository {
         new deleteAsyncTask(mTaskDao).execute(taskName);
     }
 
-    private static class insertAsyncTask extends AsyncTask<Task, Void, Void>{
-
-        private TaskDao mAsyncTaskDao;
-
-        insertAsyncTask(TaskDao dao){
-            mAsyncTaskDao = dao;
-        }
-
-        @Override
-        protected Void doInBackground(final Task... params){
-            mAsyncTaskDao.insert(params[0]);
+    public Task getTaskByID(int id){
+        try {
+            return new getByIDAsyncTask(mTaskDao).execute(id).get();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+            return null;
+        } catch (ExecutionException e) {
+            e.printStackTrace();
             return null;
         }
     }
@@ -62,5 +60,36 @@ public class TaskRepository {
             return null;
         }
     }
+
+    private static class insertAsyncTask extends AsyncTask<Task, Void, Void>{
+
+        private TaskDao mAsyncTaskDao;
+
+        insertAsyncTask(TaskDao dao){
+            mAsyncTaskDao = dao;
+        }
+
+        @Override
+        protected Void doInBackground(final Task... params){
+            mAsyncTaskDao.insert(params[0]);
+            return null;
+        }
+    }
+
+    private static class getByIDAsyncTask extends AsyncTask<Integer, Void, Task>{
+
+        private TaskDao mAsyncTaskDao;
+
+        getByIDAsyncTask(TaskDao dao){
+            mAsyncTaskDao = dao;
+        }
+
+        @Override
+        protected Task doInBackground(final Integer... params){
+            return mAsyncTaskDao.findByID(params[0]);
+        }
+    }
+
+
 
 }

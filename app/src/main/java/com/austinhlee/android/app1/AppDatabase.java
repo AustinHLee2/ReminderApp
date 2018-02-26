@@ -6,6 +6,9 @@ import android.content.Context;
 import android.os.AsyncTask;
 import android.support.annotation.NonNull;
 
+import java.util.Calendar;
+import java.util.Date;
+
 /**
  * Created by Austin Lee on 2/23/2018.
  */
@@ -38,7 +41,7 @@ public abstract class AppDatabase extends RoomDatabase {
         }
     };
 
-   /* private static class PopulateDbAsync extends AsyncTask<Void, Void, Void> {
+    private static class PopulateDbAsync extends AsyncTask<Void, Void, Void> {
         private final TaskDao mDao;
 
         PopulateDbAsync(AppDatabase db){
@@ -48,10 +51,19 @@ public abstract class AppDatabase extends RoomDatabase {
         @Override
         protected Void doInBackground(final Void... params){
             mDao.deleteAll();
-            Task task = new Task();
-            task.setTaskName("task test");
-            mDao.insert(task);
+            /*for (int i = 12; i > 0; i--) {
+                Calendar cal = Calendar.getInstance();
+                Task task = new Task();
+                task.setTaskName("task test " + i);
+                if (i % 2 == 0 && i != 0) {
+                    cal.set(Calendar.DAY_OF_MONTH, i);
+                    cal.set(Calendar.SECOND,i);
+                    Date date = cal.getTime();
+                    task.setDueDate(date);
+                }
+                mDao.insert(task);
+            }*/
             return null;
         }
-    }*/
+    }
 }

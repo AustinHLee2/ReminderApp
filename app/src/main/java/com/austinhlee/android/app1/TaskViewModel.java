@@ -20,6 +20,7 @@ public class TaskViewModel extends AndroidViewModel {
         mAllTasks = mTaskRepository.getAllTasks();
     }
 
+
     LiveData<List<Task>> getAllTasks(){
         return mAllTasks;
     }
@@ -30,6 +31,10 @@ public class TaskViewModel extends AndroidViewModel {
 
     public void deleteTask(String taskName){
         mTaskRepository.delete(taskName);
+    }
+
+    Task getTaskByID(int id){
+        return mTaskRepository.getTaskByID(id);
     }
 
 }

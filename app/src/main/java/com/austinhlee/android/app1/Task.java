@@ -7,6 +7,7 @@ import android.arch.persistence.room.PrimaryKey;
 import android.content.Context;
 import android.content.SharedPreferences;
 
+import java.util.Calendar;
 import java.util.Date;
 import java.util.Random;
 
@@ -30,6 +31,13 @@ public class Task {
     @PrimaryKey(autoGenerate = true)
     private int mId;
 
+    @ColumnInfo(name ="notification_set")
+    private boolean mHasNotification;
+
+
+    public Task(){
+        mCreationDate = Calendar.getInstance().getTime();
+    }
 
     public String getTaskName() {
         return mTaskName;
@@ -61,5 +69,13 @@ public class Task {
 
     public void setId(int id) {
         mId = id;
+    }
+
+    public boolean isHasNotification() {
+        return mHasNotification;
+    }
+
+    public void setHasNotification(boolean hasNotification) {
+        mHasNotification = hasNotification;
     }
 }

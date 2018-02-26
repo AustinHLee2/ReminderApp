@@ -7,8 +7,10 @@ import android.content.Intent;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -20,10 +22,11 @@ import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements RecyclerItemTouchHelper.RecyclerItemTouchHelperListener {
 
     private Context mContext;
     private TaskViewModel mTaskViewModel;
+    private TaskListAdapter mTaskListAdapter;
 
     public static final int NEW_TASK_ACTIVITY_REQUEST_CODE = 1;
 
@@ -34,16 +37,21 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         RecyclerView recyclerView = (RecyclerView)findViewById(R.id.my_recycler_view);
         mTaskViewModel = ViewModelProviders.of(this).get(TaskViewModel.class);
-        final TaskListAdapter adapter = new TaskListAdapter(this, mTaskViewModel);
+        mTaskListAdapter = new TaskListAdapter(this, mTaskViewModel);
+
+        ItemTouchHelper.SimpleCallback itemTouchHelperCallback = new RecyclerItemTouchHelper(0, ItemTouchHelper.LEFT, this);
         mTaskViewModel.getAllTasks().observe(this, new Observer<List<Task>>() {
             @Override
             public void onChanged(@Nullable List<Task> tasks) {
-                adapter.setTasks(tasks);
+                mTaskListAdapter.setTasks(tasks);
             }
         });
-        recyclerView.setAdapter(adapter);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
+        new ItemTouchHelper(itemTouchHelperCallback).attachToRecyclerView(recyclerView);
+
+        recyclerView.setAdapter(mTaskListAdapter);
+        recyclerView.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
     }
 
 
@@ -62,22 +70,30 @@ public class MainActivity extends AppCompatActivity {
                 startActivityForResult(intent,NEW_TASK_ACTIVITY_REQUEST_CODE);
                 return true;
 
-            /*case R.id.action_sort:
+            case R.id.action_sort:
                 // User chose the "Favorite" action, mark the current item
                 // as a favorite...
                 return true;
 
             case R.id.sort_by_alphabetical:
-                Collections.sort(myDataset.get(mContext).getTasks(), new Comparator<Task>() {
+                Collections.sort(mTaskViewModel.getAllTasks().getValue(), new Comparator<Task>() {
                     @Override
                     public int compare(Task firstTask, Task secondTask) {
                         return firstTask.getTaskName().compareTo(secondTask.getTaskName());
                     }
                 });
-                mAdapter.notifyDataSetChanged();
                 return true;
+                /*Collections.sort(mTaskViewModel.getAllTasks().getValue(), new Comparator<Task>() {
+                    @Override
+                    public int compare(Task firstTask, Task secondTask) {
+                        return firstTask.getTaskName().compareTo(secondTask.getTaskName());
 
-            case R.id.sort_by_create:
+                    }
+                });
+                mTaskListAdapter.setTasks(mTaskViewModel.getAllTasks().getValue());
+                return true;*/
+
+            /*case R.id.sort_by_create:
                 Collections.sort(myDataset.get(mContext).getTasks(), new Comparator<Task>() {
                     @Override
                     public int compare(Task firstTask, Task secondTask) {
@@ -125,6 +141,13 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
+    public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction, int position){
+        if (viewHolder instanceof TaskListAdapter.TaskViewHolder){
+            mTaskViewModel.deleteTask(mTaskViewModel.getAllTasks().getValue().get(viewHolder.getAdapterPosition()).getTaskName());
+        }
+    }
+
+    @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data){
         super.onActivityResult(requestCode,resultCode,data);
         Calendar cal = Calendar.getInstance();
@@ -138,7 +161,10 @@ public class MainActivity extends AppCompatActivity {
                 task.setDueDate(dueDate);
                 if (data.getBooleanExtra(SecondActivity.EXTRA_TASK_NOTIFACTION_SET, false)){
                     cal.setTime(dueDate);
+                    task.setHasNotification(true);
                     NotificationScheduler.setReminder(mContext, AlarmReceiver.class, dueDate, taskTitle, task.getId());
+                } else {
+                    task.setHasNotification(false);
                 }
             }
             mTaskViewModel.insert(task);
@@ -146,4 +172,5 @@ public class MainActivity extends AppCompatActivity {
             Toast.makeText(mContext, "Must enter a task name!", Toast.LENGTH_LONG).show();
         }
     }
+
 }

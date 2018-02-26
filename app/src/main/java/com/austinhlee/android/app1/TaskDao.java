@@ -5,6 +5,7 @@ import android.arch.persistence.room.Dao;
 import android.arch.persistence.room.Delete;
 import android.arch.persistence.room.Insert;
 import android.arch.persistence.room.Query;
+import android.arch.persistence.room.Update;
 
 import java.util.List;
 
@@ -18,7 +19,10 @@ public interface TaskDao {
     LiveData<List<Task>> getAllTasks();
 
     @Query("SELECT * FROM tasks WHERE task_name LIKE :taskName ")
-    Task findByName(String taskName);
+    Task findByTaskName(String taskName);
+
+    @Query("SELECT * FROM tasks where mId = :id")
+    Task findByID(int id);
 
     @Insert
     void insert(Task task);
@@ -28,4 +32,5 @@ public interface TaskDao {
 
     @Query("DELETE FROM tasks WHERE task_name LIKE :taskName ")
     void deleteTask(String taskName);
+
 }

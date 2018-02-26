@@ -4,10 +4,10 @@
 
     <!-- "Mark Favorite", should appear as action button if possible -->
     <item
+        android:tint="@android:color/white"
         android:title="@string/create"
         android:id="@+id/action_add"
         android:icon="@drawable/ic_add_black_24dp"
-        android:tint="@android:color/white"
         app:showAsAction="ifRoom"/>
 
     <!-- Settings, should always be in the overflow -->

@@ -3,9 +3,9 @@ Android app that lets users create reminders.
 
 
 ### Features
+- Uses Room Persistence Library to maintain tasks when quitting the App
 - Scheduled notifications
-- List sorting (creation date, due date, alphabetical)
-
+- Swipe left to delete items
 
 
 

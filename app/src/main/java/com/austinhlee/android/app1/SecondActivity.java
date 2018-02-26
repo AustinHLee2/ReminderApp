@@ -105,7 +105,6 @@ public class SecondActivity extends AppCompatActivity{
                 } else {
                     replyIntent.putExtra(EXTRA_TASK_NAME, mTaskNameEditText.getText().toString());
 //                    replyIntent.putExtra(EXTRA_TASK_CREATION_DATE, date);
-                    setResult(RESULT_OK, replyIntent);
                     if (mSetDueDateCheckBox.isChecked() && mDatePreview.getVisibility() == View.VISIBLE){
                         calendar.set(mDatePickerFragment.getYear(), mDatePickerFragment.getMonth(), mDatePickerFragment.getDay(), mTimePickerFragment.getHour(), mTimePickerFragment.getMinute());
                         date = calendar.getTime();
@@ -114,6 +113,7 @@ public class SecondActivity extends AppCompatActivity{
                             replyIntent.putExtra(EXTRA_TASK_NOTIFACTION_SET , true);
                         }
                     }
+                    setResult(RESULT_OK, replyIntent);
                 }
                 finish();
 

@@ -155,7 +155,7 @@ public class MainActivity extends AppCompatActivity implements RecyclerItemTouch
             Task task = new Task();
             String taskTitle = data.getStringExtra(SecondActivity.EXTRA_TASK_NAME);
             task.setTaskName(taskTitle);
-            task.setCreationDate((Date)data.getSerializableExtra(SecondActivity.EXTRA_TASK_CREATION_DATE));
+//            task.setCreationDate((Date)data.getSerializableExtra(SecondActivity.EXTRA_TASK_CREATION_DATE));
             if (data.hasExtra(SecondActivity.EXTRA_TASK_DUE_DATE)){
                 Date dueDate = (Date)data.getSerializableExtra(SecondActivity.EXTRA_TASK_DUE_DATE);
                 task.setDueDate(dueDate);

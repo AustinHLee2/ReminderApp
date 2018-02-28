@@ -33,4 +33,7 @@ public interface TaskDao {
     @Query("DELETE FROM tasks WHERE task_name LIKE :taskName ")
     void deleteTask(String taskName);
 
+    @Query("DELETE FROM tasks WHERE mId = :id")
+    void deleteByID(int id);
+
 }

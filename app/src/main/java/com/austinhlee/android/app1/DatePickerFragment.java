@@ -55,5 +55,3 @@ public class DatePickerFragment extends DialogFragment
         mDatePreview.setText((month+1)+"/"+day+"/"+year);
     }
 }
-
-

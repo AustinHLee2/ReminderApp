@@ -63,28 +63,35 @@
                     tools:text="@sample/tasks.json/data/taskName"
                     />
 
+            </RelativeLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:orientation="horizontal"
+                android:layout_alignParentRight="true">
+
                 <ImageView
                     android:id="@+id/notificicationSetImageView"
                     android:src="@drawable/ic_notification_on"
                     android:visibility="invisible"
                     tools:visibility="visible"
-                    android:layout_toRightOf="@id/taskNameTextView"
                     android:layout_width="@dimen/ic_notificatiton_icon"
                     android:layout_height="@dimen/ic_notificatiton_icon"
                     android:alpha="0.40"
-                    android:layout_centerVertical="true"
-                    android:layout_marginLeft="8dp"/>
+                    android:layout_marginRight="4dp"/>
 
-            </RelativeLayout>
+                <TextView
+                    android:id="@+id/dueDateTextView"
+                    android:layout_width="wrap_content"
+                    android:textSize="14sp"
+                    android:layout_height="wrap_content"
+                    tools:text="@sample/tasks.json/data/dueDate"/>
 
-            <TextView
-                android:id="@+id/dueDateTextView"
-                android:layout_width="wrap_content"
-                android:textSize="14sp"
-                android:layout_alignParentRight="true"
-                android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                tools:text="@sample/tasks.json/data/dueDate"/>
+
+
+            </LinearLayout>
 
         </RelativeLayout>
 

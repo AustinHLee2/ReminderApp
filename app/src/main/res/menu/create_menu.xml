@@ -5,7 +5,7 @@
     <item
         android:title="@string/create"
         android:id="@+id/action_submit"
-        android:icon="@drawable/ic_check_black_24dp"
+        android:icon="@drawable/ic_check_white"
         android:tint="@android:color/white"
         app:showAsAction="ifRoom"/>
 

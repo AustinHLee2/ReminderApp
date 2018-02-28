@@ -61,12 +61,12 @@ public class SecondActivity extends AppCompatActivity{
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
                 if (isChecked){
-                   mLinearLayout.setVisibility(View.VISIBLE);
-                   mNotificationCheckBox.setChecked(false);
-                   if (mDatePreview.getVisibility() == View.VISIBLE){
-                       mDatePreview.setVisibility(View.INVISIBLE);
-                       mTimePreview.setVisibility(View.INVISIBLE);
-                   }
+                    mLinearLayout.setVisibility(View.VISIBLE);
+                    mNotificationCheckBox.setChecked(false);
+                    if (mDatePreview.getVisibility() == View.VISIBLE){
+                        mDatePreview.setVisibility(View.INVISIBLE);
+                        mTimePreview.setVisibility(View.INVISIBLE);
+                    }
                 }
                 else {
                     mLinearLayout.setVisibility(View.INVISIBLE);
@@ -124,5 +124,4 @@ public class SecondActivity extends AppCompatActivity{
 
         }
     }
-
 }

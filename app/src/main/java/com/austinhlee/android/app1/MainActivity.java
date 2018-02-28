@@ -48,6 +48,7 @@ public class MainActivity extends AppCompatActivity implements RecyclerItemTouch
         });
 
         new ItemTouchHelper(itemTouchHelperCallback).attachToRecyclerView(recyclerView);
+        mTaskListAdapter.setCurrentViewType(mTaskListAdapter.COMPACT_VIEW_TYPE);
 
         recyclerView.setAdapter(mTaskListAdapter);
         recyclerView.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
@@ -121,9 +122,11 @@ public class MainActivity extends AppCompatActivity implements RecyclerItemTouch
                 return true;*/
 
             case R.id.compact_view:
+                mTaskListAdapter.setCurrentViewType(0);
                 return true;
 
             case R.id.detailed_view:
+                mTaskListAdapter.setCurrentViewType(1);
                 return true;
 
             case R.id.action_edit:
@@ -143,7 +146,7 @@ public class MainActivity extends AppCompatActivity implements RecyclerItemTouch
     @Override
     public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction, int position){
         if (viewHolder instanceof TaskListAdapter.TaskViewHolder){
-            mTaskViewModel.deleteTask(mTaskViewModel.getAllTasks().getValue().get(viewHolder.getAdapterPosition()).getTaskName());
+            mTaskViewModel.deleteTask(mTaskViewModel.getAllTasks().getValue().get(position).getId());
         }
     }
 
@@ -155,11 +158,10 @@ public class MainActivity extends AppCompatActivity implements RecyclerItemTouch
             Task task = new Task();
             String taskTitle = data.getStringExtra(SecondActivity.EXTRA_TASK_NAME);
             task.setTaskName(taskTitle);
-//            task.setCreationDate((Date)data.getSerializableExtra(SecondActivity.EXTRA_TASK_CREATION_DATE));
-            if (data.hasExtra(SecondActivity.EXTRA_TASK_DUE_DATE)){
-                Date dueDate = (Date)data.getSerializableExtra(SecondActivity.EXTRA_TASK_DUE_DATE);
+            if (data.hasExtra(SecondActivity.EXTRA_TASK_DUE_DATE)) {
+                Date dueDate = (Date) data.getSerializableExtra(SecondActivity.EXTRA_TASK_DUE_DATE);
                 task.setDueDate(dueDate);
-                if (data.getBooleanExtra(SecondActivity.EXTRA_TASK_NOTIFACTION_SET, false)){
+                if (data.getBooleanExtra(SecondActivity.EXTRA_TASK_NOTIFACTION_SET, false)) {
                     cal.setTime(dueDate);
                     task.setHasNotification(true);
                     NotificationScheduler.setReminder(mContext, AlarmReceiver.class, dueDate, taskTitle, task.getId());
@@ -172,5 +174,7 @@ public class MainActivity extends AppCompatActivity implements RecyclerItemTouch
             Toast.makeText(mContext, "Must enter a task name!", Toast.LENGTH_LONG).show();
         }
     }
+
+    //TODO recreate remindernotifications when user closes out of app
 
 }

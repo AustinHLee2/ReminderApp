@@ -9,7 +9,6 @@ import android.widget.TextView;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.Date;
 
 public class TaskDetailActivity extends AppCompatActivity {
@@ -43,22 +42,6 @@ public class TaskDetailActivity extends AppCompatActivity {
         }
         mCreationDateTextView.setText(formatDueDate(current.getCreationDate()));
 
-       /* mDueDateTextView = findViewById(R.id.detail_dueDate);
-        mDueDateTextView.setText("No Due Date Set");
-        if (intent.hasExtra("taskDueDate")) {
-            Date dueDate = (Date) intent.getSerializableExtra("taskDueDate");
-            SimpleDateFormat dateFormat = new SimpleDateFormat("EE, MM/dd/yy, HH:mm");
-            String dueDateString = dateFormat.format(dueDate);
-            mDueDateTextView.setText(dueDateString);
-        }
-        Date creationDate = (Date)intent.getSerializableExtra("taskCreationDate");
-
-        SimpleDateFormat localDateFormat = new SimpleDateFormat("MM/dd/yy");
-        String creationDateString = localDateFormat.format(creationDate);
-
-        mCreationDateTextView = findViewById(R.id.detail_creationDate);
-        mCreationDateTextView.setText(creationDateString);
-*/
     }
 
     private String formatDueDate(Date date){

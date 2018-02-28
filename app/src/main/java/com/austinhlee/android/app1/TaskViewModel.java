@@ -33,6 +33,10 @@ public class TaskViewModel extends AndroidViewModel {
         mTaskRepository.delete(taskName);
     }
 
+    public void deleteTask(int id){
+        mTaskRepository.deleteByID(id);
+    }
+
     Task getTaskByID(int id){
         return mTaskRepository.getTaskByID(id);
     }

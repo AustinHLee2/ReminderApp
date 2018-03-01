@@ -19,7 +19,7 @@ import java.util.Date;
 
 public class NotificationScheduler {
 
-    public static void setReminder(Context context, Class<?> cls, Date date, String taskTitle, int requestCode){
+    public static void setReminder(Context context, Class<?> cls, Date date, String taskTitle, int requestCode, String taskAdditionalNotes){
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(date);
 
@@ -29,6 +29,7 @@ public class NotificationScheduler {
 
         Intent intent1 = new Intent(context, cls);
         intent1.putExtra("taskTitle", taskTitle);
+        intent1.putExtra("additionalNotes", taskAdditionalNotes);
         PendingIntent pendingIntent = PendingIntent.getBroadcast(context,requestCode, intent1, PendingIntent.FLAG_UPDATE_CURRENT);
 
         AlarmManager am = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
@@ -47,8 +48,8 @@ public class NotificationScheduler {
 
         NotificationCompat.Builder builder = new NotificationCompat.Builder(context, "default");
         builder.setContentTitle(title);
-        builder.setContentText(content);
         builder.setSmallIcon(android.R.drawable.btn_star);
+        builder.setContentText(content);
 
         NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
         int _id = (int) System.currentTimeMillis();

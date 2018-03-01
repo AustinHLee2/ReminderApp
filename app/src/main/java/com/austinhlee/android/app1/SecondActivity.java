@@ -65,7 +65,6 @@ public class SecondActivity extends AppCompatActivity{
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
                 if (isChecked){
-//                    mLinearLayout.setVisibility(View.VISIBLE);
                     TransitionManager.beginDelayedTransition(mLinearLayout);
                     mLinearLayout.setVisibility(View.VISIBLE);
                     mNotificationCheckBox.setChecked(false);
@@ -112,7 +111,7 @@ public class SecondActivity extends AppCompatActivity{
                     replyIntent.putExtra(EXTRA_TASK_NAME, mTaskNameEditText.getText().toString());
                     replyIntent.putExtra(EXTRA_ADDITIONAL_NOTES, mAdditionalNotesEditText.getText().toString());
                     if (mSetDueDateCheckBox.isChecked() && mDatePreview.getVisibility() == View.VISIBLE){
-                        calendar.set(mDatePickerFragment.getYear(), mDatePickerFragment.getMonth(), mDatePickerFragment.getDay(), mTimePickerFragment.getHour(), mTimePickerFragment.getMinute());
+                        calendar.set(mDatePickerFragment.getYear(), mDatePickerFragment.getMonth(), mDatePickerFragment.getDay(), mTimePickerFragment.getHour(), mTimePickerFragment.getMinute(),0);
                         date = calendar.getTime();
                         replyIntent.putExtra(EXTRA_TASK_DUE_DATE, date);
                         if (mNotificationCheckBox.isChecked() && mDatePreview.getVisibility() == View.VISIBLE){

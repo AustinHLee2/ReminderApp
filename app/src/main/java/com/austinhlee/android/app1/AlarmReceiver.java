@@ -12,6 +12,6 @@ public class AlarmReceiver extends BroadcastReceiver {
     public void onReceive(Context context, Intent intent) {
         // TODO: This method is called when the BroadcastReceiver is receiving
         // an Intent broadcast.
-        NotificationScheduler.showNotification(context, MainActivity.class, intent.getStringExtra("taskTitle"), "content content");
+        NotificationScheduler.showNotification(context, MainActivity.class, intent.getStringExtra("taskTitle"), intent.getStringExtra("additionalNotes"));
     }
 }

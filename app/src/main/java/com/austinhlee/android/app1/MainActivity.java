@@ -128,7 +128,7 @@ public class MainActivity extends AppCompatActivity implements RecyclerItemTouch
                 if (data.getBooleanExtra(SecondActivity.EXTRA_TASK_NOTIFACTION_SET, false)) {
                     cal.setTime(dueDate);
                     task.setHasNotification(true);
-                    NotificationScheduler.setReminder(mContext, AlarmReceiver.class, dueDate, taskTitle, task.getId());
+                    NotificationScheduler.setReminder(mContext, AlarmReceiver.class, dueDate, taskTitle, task.getId(), task.getAdditionalNotes());
                 } else {
                     task.setHasNotification(false);
                 }

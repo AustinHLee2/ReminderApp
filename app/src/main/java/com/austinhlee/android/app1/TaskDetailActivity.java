@@ -1,11 +1,16 @@
 package com.austinhlee.android.app1;
 
+import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.transition.Explode;
+import android.view.View;
+import android.view.Window;
 import android.widget.TextView;
 
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -14,37 +19,44 @@ public class TaskDetailActivity extends AppCompatActivity {
     private Context mContext;
     private TextView mTitleTextView;
     private TextView mDueDateTextView;
-    private TextView mCreationDateTextView;
+    private TextView mAdditionalNotesTextView;
 
-    public TaskDetailActivity() {
-    }
+    private TaskViewModel mTaskViewModel;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        getWindow().requestFeature(Window.FEATURE_CONTENT_TRANSITIONS);
+        getWindow().setAllowEnterTransitionOverlap(true);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_task_detail);
         mContext = this;
+        mTaskViewModel = ViewModelProviders.of(this).get(TaskViewModel.class);
+        mTitleTextView = findViewById(R.id.detail_taskTitle);
+        mDueDateTextView = findViewById(R.id.detail_dueDate);
+        mAdditionalNotesTextView = findViewById(R.id.detail_additional_notes);
 
         Intent intent = getIntent();
+        Task current = mTaskViewModel.getTaskByID(intent.getIntExtra(TaskListAdapter.EXTRA_TASK_ID,0));
 
-        mTitleTextView = findViewById(R.id.detail_taskTitle);
-        mTitleTextView.setText(intent.getStringExtra("taskName"));
 
-        mDueDateTextView = findViewById(R.id.detail_dueDate);
-        mDueDateTextView.setText("No Due Date Set");
-        if (intent.hasExtra("taskDueDate")) {
-            Date dueDate = (Date) intent.getSerializableExtra("taskDueDate");
-            SimpleDateFormat dateFormat = new SimpleDateFormat("EE, MM/dd/yy, HH:mm");
-            String dueDateString = dateFormat.format(dueDate);
-            mDueDateTextView.setText(dueDateString);
+        mTitleTextView.setText(current.getTaskName());
+        if (current.getAdditionalNotes().equals("")) {
+            mAdditionalNotesTextView.setVisibility(View.GONE);
+        } else {
+            mAdditionalNotesTextView.setText(current.getAdditionalNotes());
         }
-        Date creationDate = (Date)intent.getSerializableExtra("taskCreationDate");
 
-        SimpleDateFormat localDateFormat = new SimpleDateFormat("MM/dd/yy");
-        String creationDateString = localDateFormat.format(creationDate);
+        if (current.getDueDate() != null){
+            mDueDateTextView.setText(formatDueDate(current.getDueDate()));
+        } else {
+            mDueDateTextView.setVisibility(View.GONE);
+        }
 
-        mCreationDateTextView = findViewById(R.id.detail_creationDate);
-        mCreationDateTextView.setText(creationDateString);
+    }
 
+    private String formatDueDate(Date date){
+        DateFormat df = new SimpleDateFormat("HH:mm, dd MMM yy");
+        return df.format(date);
     }
 }

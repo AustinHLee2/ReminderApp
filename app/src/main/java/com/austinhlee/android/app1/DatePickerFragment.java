@@ -9,7 +9,10 @@ import android.widget.CheckBox;
 import android.widget.DatePicker;
 import android.widget.TextView;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 
 public class DatePickerFragment extends DialogFragment
         implements DatePickerDialog.OnDateSetListener {
@@ -17,16 +20,15 @@ public class DatePickerFragment extends DialogFragment
     int mYear;
     int mMonth;
     int mDay;
-    private TextView mTextView;
+    private TextView mDatePreview;
     private CheckBox mCheckBox;
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         // Use the current time as the default values for the picker
         final Calendar c = Calendar.getInstance();
-
-        mTextView = (TextView)getActivity().findViewById(R.id.date_preview);
         mCheckBox = (CheckBox)getActivity().findViewById(R.id.notificationCheckBox);
+        mDatePreview = (TextView)getActivity().findViewById(R.id.date_preview);
         // Create a new instance of TimePickerDialog and return it
         return new DatePickerDialog(getActivity(), this, c.get(Calendar.YEAR),c.get(Calendar.MONTH),c.get(Calendar.DAY_OF_MONTH));
     }
@@ -48,10 +50,8 @@ public class DatePickerFragment extends DialogFragment
         mYear = year;
         mMonth = month;
         mDay = day;
-        mTextView.setVisibility(View.VISIBLE);
         mCheckBox.setVisibility(View.VISIBLE);
-        mTextView.setText((month+1)+"/"+day+"/"+year);
+        mDatePreview.setVisibility(View.VISIBLE);
+        mDatePreview.setText((month+1)+"/"+day+"/"+year);
     }
 }
-
-

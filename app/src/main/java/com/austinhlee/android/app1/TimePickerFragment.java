@@ -52,5 +52,3 @@ public class TimePickerFragment extends DialogFragment
         return mMinute;
     }
 }
-
-

@@ -11,27 +11,33 @@
 
     <TextView
         android:id="@+id/detail_taskTitle"
+        android:transitionName="task_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:focusable="false"
         android:textSize="40dp"
         android:text="Task Name"/>
 
 
     <TextView
-        android:id="@+id/detail_dueDate"
+        android:id="@+id/detail_additional_notes"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:transitionName="additional_notes"
         android:textSize="20dp"
-        android:layout_marginRight="5dp"
-        android:text="Due Date"/>
-
+        tools:text="Additional Notes"/>
 
     <TextView
-        android:id="@+id/detail_creationDate"
+        android:id="@+id/detail_dueDate"
+        android:transitionName="due_date"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="15dp"
-        android:text="Creation Date"/>
+        android:layout_marginRight="5dp"
+        tools:text="Due Date"/>
+
+
+
 
 
 

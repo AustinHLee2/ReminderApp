@@ -11,6 +11,7 @@ import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.TaskStackBuilder;
 
 import java.util.Calendar;
+import java.util.Date;
 
 /**
  * Created by Austin Lee on 2/21/2018.
@@ -18,14 +19,9 @@ import java.util.Calendar;
 
 public class NotificationScheduler {
 
-    public static void setReminder(Context context, Class<?> cls, int year, int month, int day, int hour, int min, String taskTitle, int requestCode){
+    public static void setReminder(Context context, Class<?> cls, Date date, String taskTitle, int requestCode){
         Calendar calendar = Calendar.getInstance();
-        calendar.set(Calendar.YEAR, year);
-        calendar.set(Calendar.MONTH, month);
-        calendar.set(Calendar.DAY_OF_MONTH, day);
-        calendar.set(Calendar.HOUR_OF_DAY, hour);
-        calendar.set(Calendar.MINUTE, min);
-        calendar.set(Calendar.SECOND, 0);
+        calendar.setTime(date);
 
         ComponentName receiver = new ComponentName(context, cls);
         PackageManager pm = context.getPackageManager();
@@ -59,12 +55,12 @@ public class NotificationScheduler {
         notificationManager.notify(_id, builder.build());
     }
 
-    public static void cancelReminder(Context context, Class<?> cls, int requestCode){
-        ComponentName receiver = new ComponentName(context, cls);
+    public static void cancelReminder(Context context, Class<?> myReceiver, int requestCode){
+        ComponentName receiver = new ComponentName(context, myReceiver);
         PackageManager pm = context.getPackageManager();
         pm.setComponentEnabledSetting(receiver, PackageManager.COMPONENT_ENABLED_STATE_DISABLED, PackageManager.DONT_KILL_APP);
 
-        Intent intent1 = new Intent(context, cls);
+        Intent intent1 = new Intent(context, myReceiver);
         PendingIntent pendingIntent = PendingIntent.getBroadcast(context, requestCode, intent1, PendingIntent.FLAG_UPDATE_CURRENT);
         AlarmManager am = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
         am.cancel(pendingIntent);

@@ -31,8 +31,11 @@ public class Task {
     @PrimaryKey(autoGenerate = true)
     private int mId;
 
-    @ColumnInfo(name ="notification_set")
+    @ColumnInfo(name = "notification_set")
     private boolean mHasNotification;
+
+    @ColumnInfo(name = "additional_notes")
+    private String mAdditionalNotes;
 
 
     public Task(){
@@ -77,5 +80,13 @@ public class Task {
 
     public void setHasNotification(boolean hasNotification) {
         mHasNotification = hasNotification;
+    }
+
+    public String getAdditionalNotes() {
+        return mAdditionalNotes;
+    }
+
+    public void setAdditionalNotes(String additionalNotes) {
+        mAdditionalNotes = additionalNotes;
     }
 }

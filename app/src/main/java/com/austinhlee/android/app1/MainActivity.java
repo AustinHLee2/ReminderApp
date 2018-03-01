@@ -4,6 +4,7 @@ import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -14,11 +15,10 @@ import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.Window;
 import android.widget.Toast;
 
 import java.util.Calendar;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 
@@ -27,17 +27,23 @@ public class MainActivity extends AppCompatActivity implements RecyclerItemTouch
     private Context mContext;
     private TaskViewModel mTaskViewModel;
     private TaskListAdapter mTaskListAdapter;
+    private SharedPreferences mSharedPreferences;
 
     public static final int NEW_TASK_ACTIVITY_REQUEST_CODE = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         mContext = this;
+        getWindow().requestFeature(Window.FEATURE_CONTENT_TRANSITIONS);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         RecyclerView recyclerView = (RecyclerView)findViewById(R.id.my_recycler_view);
         mTaskViewModel = ViewModelProviders.of(this).get(TaskViewModel.class);
         mTaskListAdapter = new TaskListAdapter(this, mTaskViewModel);
+
+        mSharedPreferences = mContext.getSharedPreferences(
+                getString(R.string.preference_file_key), Context.MODE_PRIVATE);
+
 
         ItemTouchHelper.SimpleCallback itemTouchHelperCallback = new RecyclerItemTouchHelper(0, ItemTouchHelper.LEFT, this);
         mTaskViewModel.getAllTasks().observe(this, new Observer<List<Task>>() {
@@ -48,7 +54,13 @@ public class MainActivity extends AppCompatActivity implements RecyclerItemTouch
         });
 
         new ItemTouchHelper(itemTouchHelperCallback).attachToRecyclerView(recyclerView);
-        mTaskListAdapter.setCurrentViewType(mTaskListAdapter.COMPACT_VIEW_TYPE);
+        int viewType = mSharedPreferences.getInt(getString(R.string.list_default_view_key), -1);
+        if (viewType == -1) {
+            mTaskListAdapter.setCurrentViewType(mTaskListAdapter.COMPACT_VIEW_TYPE);
+        }
+        else {
+            mTaskListAdapter.setCurrentViewType(viewType);
+        }
 
         recyclerView.setAdapter(mTaskListAdapter);
         recyclerView.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
@@ -64,62 +76,20 @@ public class MainActivity extends AppCompatActivity implements RecyclerItemTouch
     }
 
     @Override
+    protected void onStop(){
+        super.onStop();
+        SharedPreferences.Editor editor = mSharedPreferences.edit();
+        editor.putInt(getString(R.string.list_default_view_key), mTaskListAdapter.getItemViewType(0));
+        editor.commit();
+    }
+
+    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_add:
                 Intent intent = new Intent(mContext, SecondActivity.class);
                 startActivityForResult(intent,NEW_TASK_ACTIVITY_REQUEST_CODE);
                 return true;
-
-            case R.id.action_sort:
-                // User chose the "Favorite" action, mark the current item
-                // as a favorite...
-                return true;
-
-            case R.id.sort_by_alphabetical:
-                Collections.sort(mTaskViewModel.getAllTasks().getValue(), new Comparator<Task>() {
-                    @Override
-                    public int compare(Task firstTask, Task secondTask) {
-                        return firstTask.getTaskName().compareTo(secondTask.getTaskName());
-                    }
-                });
-                return true;
-                /*Collections.sort(mTaskViewModel.getAllTasks().getValue(), new Comparator<Task>() {
-                    @Override
-                    public int compare(Task firstTask, Task secondTask) {
-                        return firstTask.getTaskName().compareTo(secondTask.getTaskName());
-
-                    }
-                });
-                mTaskListAdapter.setTasks(mTaskViewModel.getAllTasks().getValue());
-                return true;*/
-
-            /*case R.id.sort_by_create:
-                Collections.sort(myDataset.get(mContext).getTasks(), new Comparator<Task>() {
-                    @Override
-                    public int compare(Task firstTask, Task secondTask) {
-                        return firstTask.getCreationDate().compareTo(secondTask.getCreationDate());
-                    }
-                });
-                mAdapter.notifyDataSetChanged();
-
-                return true;
-
-            case R.id.sort_by_due:
-                Collections.sort(myDataset.get(mContext).getTasks(), new Comparator<Task>() {
-                    @Override
-                    public int compare(Task firstTask, Task secondTask) {
-                        if (firstTask.getDueDate() == null) {
-                            return (secondTask.getDueDate() == null) ? 0 : -1;
-                        }
-                        if (secondTask.getDueDate() == null) {
-                            return 1;
-                        }
-                        return secondTask.getDueDate().compareTo(firstTask.getDueDate());
-                    }
-                });
-                mAdapter.notifyDataSetChanged();
-                return true;*/
 
             case R.id.compact_view:
                 mTaskListAdapter.setCurrentViewType(0);
@@ -129,15 +99,7 @@ public class MainActivity extends AppCompatActivity implements RecyclerItemTouch
                 mTaskListAdapter.setCurrentViewType(1);
                 return true;
 
-            case R.id.action_edit:
-                return true;
-
-            case R.id.action_options:
-                return true;
-
             default:
-                // If we got here, the user's action was not recognized.
-                // Invoke the superclass to handle it.
                 return super.onOptionsItemSelected(item);
 
         }
@@ -157,7 +119,9 @@ public class MainActivity extends AppCompatActivity implements RecyclerItemTouch
         if (requestCode == NEW_TASK_ACTIVITY_REQUEST_CODE && resultCode == RESULT_OK) {
             Task task = new Task();
             String taskTitle = data.getStringExtra(SecondActivity.EXTRA_TASK_NAME);
+            String additionalNotes = data.getStringExtra(SecondActivity.EXTRA_ADDITIONAL_NOTES);
             task.setTaskName(taskTitle);
+            task.setAdditionalNotes(additionalNotes);
             if (data.hasExtra(SecondActivity.EXTRA_TASK_DUE_DATE)) {
                 Date dueDate = (Date) data.getSerializableExtra(SecondActivity.EXTRA_TASK_DUE_DATE);
                 task.setDueDate(dueDate);
@@ -174,7 +138,4 @@ public class MainActivity extends AppCompatActivity implements RecyclerItemTouch
             Toast.makeText(mContext, "Must enter a task name!", Toast.LENGTH_LONG).show();
         }
     }
-
-    //TODO recreate remindernotifications when user closes out of app
-
 }

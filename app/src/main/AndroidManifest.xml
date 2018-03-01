@@ -12,26 +12,28 @@
         android:roundIcon="@mipmap/ic_new_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".MainActivity">
+        <activity android:name=".MainActivity"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".SecondActivity">
+        <activity android:name=".SecondActivity"
+            android:screenOrientation="portrait">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.austinhlee.android.app1.MainActivity" />
         </activity>
-        <activity android:name=".TaskDetailActivity" />
+        <activity android:name=".TaskDetailActivity"
+            android:screenOrientation="portrait"/>
 
         <receiver
             android:name=".AlarmReceiver"
             android:enabled="true"
             android:exported="true" />
 
-        <activity android:name=".TaskEditActivity"></activity>
     </application>
 
 </manifest>

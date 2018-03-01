@@ -2,6 +2,7 @@ package com.austinhlee.android.app1;
 
 import android.content.Context;
 import android.content.Intent;
+import android.support.transition.TransitionManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -31,9 +32,10 @@ public class SecondActivity extends AppCompatActivity{
     private CheckBox mSetDueDateCheckBox;
     private CheckBox mNotificationCheckBox;
     private LinearLayout mLinearLayout;
+    private EditText mAdditionalNotesEditText;
 
     public static final String EXTRA_TASK_NAME = "com.austinhlee.android:app1.TASK_NAME";
-    public static final String EXTRA_TASK_CREATION_DATE = "com.austinhlee.android:app1.CREATION_DATE";
+    public static final String EXTRA_ADDITIONAL_NOTES = "com.austinhlee.android:app1.ADDITIONAL_NOTES";
     public static final String EXTRA_TASK_DUE_DATE = "com.austinhlee.android:app1.DUE_DATE";
     public static final String EXTRA_TASK_NOTIFACTION_SET = "com.austinhlee.android:app1.NOTIFICATION_SET";
 
@@ -42,6 +44,8 @@ public class SecondActivity extends AppCompatActivity{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_second);
         mContext = this;
+
+        mAdditionalNotesEditText = (EditText) findViewById(R.id.extraNotesEditText);
 
         mTimeButton = (Button) findViewById(R.id.pickTimeButton);
 
@@ -61,6 +65,8 @@ public class SecondActivity extends AppCompatActivity{
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
                 if (isChecked){
+//                    mLinearLayout.setVisibility(View.VISIBLE);
+                    TransitionManager.beginDelayedTransition(mLinearLayout);
                     mLinearLayout.setVisibility(View.VISIBLE);
                     mNotificationCheckBox.setChecked(false);
                     if (mDatePreview.getVisibility() == View.VISIBLE){
@@ -104,7 +110,7 @@ public class SecondActivity extends AppCompatActivity{
                     setResult(RESULT_CANCELED, replyIntent);
                 } else {
                     replyIntent.putExtra(EXTRA_TASK_NAME, mTaskNameEditText.getText().toString());
-//                    replyIntent.putExtra(EXTRA_TASK_CREATION_DATE, date);
+                    replyIntent.putExtra(EXTRA_ADDITIONAL_NOTES, mAdditionalNotesEditText.getText().toString());
                     if (mSetDueDateCheckBox.isChecked() && mDatePreview.getVisibility() == View.VISIBLE){
                         calendar.set(mDatePickerFragment.getYear(), mDatePickerFragment.getMonth(), mDatePickerFragment.getDay(), mTimePickerFragment.getHour(), mTimePickerFragment.getMinute());
                         date = calendar.getTime();
@@ -118,8 +124,6 @@ public class SecondActivity extends AppCompatActivity{
                 finish();
 
             default:
-                // If we got here, the user's action was not recognized.
-                // Invoke the superclass to handle it.
                 return super.onOptionsItemSelected(item);
 
         }

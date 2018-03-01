@@ -2,15 +2,14 @@ package com.austinhlee.android.app1;
 
 import android.content.Context;
 import android.content.Intent;
-import android.support.v7.util.DiffUtil;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -18,6 +17,7 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.Random;
 
 
 /**
@@ -32,8 +32,6 @@ public class TaskListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     private Context mContext;
 
     public static String EXTRA_TASK_ID = "com.austinhlee.android:app1.TASK_ID";
-    public static String EDIT_TASK_KEY;
-    public static final int EDIT_TASK_ACTIVITY_REQUEST_CODE = 2;
 
     public static final int COMPACT_VIEW_TYPE = 0;
 
@@ -67,20 +65,22 @@ public class TaskListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
         private TextView taskNameTextView;
         private TextView mDueDateTextView;
-        private TextView mCreationDateTextView;
         private CheckBox mCheckBox;
         private ImageView mNotificationIconImageView;
+        private TextView mAdditionalNotesTextView;
 
         public RelativeLayout viewBackground;
         public RelativeLayout viewForeground;
+        public LinearLayout mTitleAndNotesLinearLayout;
 
         TaskViewHolderDetailed(View itemView) {
             super(itemView);
+            mTitleAndNotesLinearLayout = (LinearLayout) itemView.findViewById(R.id.titleAndNotesLinearLayout);
+            mAdditionalNotesTextView = (TextView) itemView.findViewById(R.id.additionalNotesTextview);
             taskNameTextView = (TextView) itemView.findViewById(R.id.taskNameTextView);
             mNotificationIconImageView = (ImageView) itemView.findViewById(R.id.notificicationSetImageView);
             mDueDateTextView = (TextView) itemView.findViewById(R.id.dueDateTextView);
             mCheckBox = (CheckBox) itemView.findViewById(R.id.taskCheckBox);
-            mCreationDateTextView = (TextView) itemView.findViewById(R.id.creationDateTextview);
             viewForeground = (RelativeLayout) itemView.findViewById(R.id.foreground_card_view);
             viewBackground = (RelativeLayout) itemView.findViewById(R.id.item_background);
         }
@@ -106,7 +106,6 @@ public class TaskListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                 return new TaskViewHolderDetailed(itemViewDetailed);
             }
             default: {
-                Log.d("fewaaaaaafaewwwwww", "Default reached");
                 return null;
             }
         }
@@ -124,23 +123,26 @@ public class TaskListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
+        Task current = mTaskList.get(position);
         int viewType = getItemViewType(position);
+        Random rand = new Random();
         switch (viewType) {
             case 0: {
                 TaskViewHolder taskViewHolder = (TaskViewHolder) holder;
+                taskViewHolder.taskNameTextView.setTransitionName(Integer.toString(current.getId()));
+                taskViewHolder.mDueDateTextView.setTransitionName(current.getCreationDate().toString());
                 if (mTaskList != null) {
-                    Task current = mTaskList.get(position);
                     taskViewHolder.taskNameTextView.setText(current.getTaskName());
                     if (current.getDueDate() != null) {
                         taskViewHolder.mDueDateTextView.setVisibility(View.VISIBLE);
                         taskViewHolder.mDueDateTextView.setText(formatDate(current.getDueDate()));
                     } else {
-                        taskViewHolder.mDueDateTextView.setVisibility(View.INVISIBLE);
+                        taskViewHolder.mDueDateTextView.setVisibility(View.GONE);
                     }
                     if (current.isHasNotification()) {
                         taskViewHolder.mNotificationIconImageView.setVisibility(View.VISIBLE);
                     } else {
-                        taskViewHolder.mNotificationIconImageView.setVisibility(View.INVISIBLE);
+                        taskViewHolder.mNotificationIconImageView.setVisibility(View.GONE);
                     }
                     taskViewHolder.mCheckBox.setChecked(false);
                     taskViewHolder.mCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -169,16 +171,23 @@ public class TaskListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                 break;
             }
             case 1: {
+                int additionalNotesTextViewTransitionName = rand.nextInt();
                 TaskViewHolderDetailed taskViewHolderDetailed = (TaskViewHolderDetailed) holder;
+                taskViewHolderDetailed.taskNameTextView.setTransitionName(Integer.toString(current.getId()));
+                taskViewHolderDetailed.mAdditionalNotesTextView.setTransitionName(Integer.toString(additionalNotesTextViewTransitionName));
+                taskViewHolderDetailed.mDueDateTextView.setTransitionName(current.getCreationDate().toString());
                 if (mTaskList != null) {
-                    Task current = mTaskList.get(position);
                     taskViewHolderDetailed.taskNameTextView.setText(current.getTaskName());
-                    taskViewHolderDetailed.mCreationDateTextView.setText(current.getCreationDate().toString());
                     if (current.getDueDate() != null) {
                         taskViewHolderDetailed.mDueDateTextView.setVisibility(View.VISIBLE);
                         taskViewHolderDetailed.mDueDateTextView.setText(formatDate(current.getDueDate()));
                     } else {
                         taskViewHolderDetailed.mDueDateTextView.setVisibility(View.INVISIBLE);
+                    }
+                    if (!current.getAdditionalNotes().equals("")){
+                        taskViewHolderDetailed.mAdditionalNotesTextView.setText(current.getAdditionalNotes());
+                    } else {
+                        taskViewHolderDetailed.mAdditionalNotesTextView.setVisibility(View.GONE);
                     }
                     if (current.isHasNotification()) {
                         taskViewHolderDetailed.mNotificationIconImageView.setVisibility(View.VISIBLE);
